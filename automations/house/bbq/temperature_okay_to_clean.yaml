@@ -1,0 +1,35 @@
+  alias: 'BBQ - Temperature okay to clean'
+
+  trigger:
+
+    - platform: numeric_state
+      entity_id: sensor.esph_bbq_ambient_temperature
+      below: '40'
+
+  condition:
+
+    - condition: and
+      conditions:
+
+      # check the automation has not run within the last 60 minutes
+      - condition: template
+        value_template: "{{ (as_timestamp(states.sensor.date_time.last_changed) - (as_timestamp(state_attr('automation.bbq_temperature_okay_to_clean','last_triggered')))) > 3600 }}"
+
+      - condition: state
+        entity_id: input_boolean.occupied_bbq
+        state: "on"
+
+  action:
+
+    - service: notify.html5_notification
+      data_template:
+        title: "🍗 BBQ safe for cleaning"
+        message: "The BBQ is at {{ states('sensor.esph_bbq_ambient_temperature') }}°C and safe for cleaning and closing up."
+
+    - service: notify.ios_james_iphone
+      data_template:
+        title: "🍗 BBQ safe for cleaning"
+        message: "The BBQ is at {{ states('sensor.esph_bbq_ambient_temperature') }}°C and safe for cleaning and closing up."
+
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.occupied_bbq

@@ -1,0 +1,4 @@
+occupied_bbq:
+  name: BBQ in-use
+  initial: false
+  icon: mdi:grill
