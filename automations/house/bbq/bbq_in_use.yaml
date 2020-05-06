@@ -1,0 +1,34 @@
+alias: 'BBQ - Temperature indicates BBQ in use'
+
+trigger:
+
+  - platform: numeric_state
+    entity_id: sensor.esph_bbq_ambient_temperature
+    above: '70'
+
+condition:
+
+  - condition: and
+    conditions:
+
+    - condition: state
+      entity_id: input_boolean.occupied_bbq
+      state: "off"
+
+action:
+
+  - service: notify.html5_notification
+    data_template:
+      title: "🍗 BBQ warming up"
+      message: "The BBQ is at {{ states('sensor.esph_bbq_ambient_temperature') }}°C."
+
+  - service: notify.ios_james_iphone
+    data_template:
+      title: "🍗 BBQ warming up"
+      message: "The BBQ is at {{ states('sensor.esph_bbq_ambient_temperature') }}°C."
+
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.occupied_bbq
+
+  - service: counter.increment
+    entity_id: counter.bbq_usage
