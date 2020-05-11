@@ -1,0 +1,6 @@
+platform: template
+sensors:
+  wind_speed_gust_knots:
+    friendly_name_template: "Wind Speed Gust"
+    value_template: "{{ (states('sensor.wind_speed_gust') | round(2) * 1.9438444924406) | round(1) }}"
+    unit_of_measurement: 'kts'
