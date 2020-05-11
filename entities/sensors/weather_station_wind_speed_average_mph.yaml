@@ -1,0 +1,6 @@
+platform: template
+sensors:
+  wind_speed_average_mph:
+    friendly_name_template: "Wind Speed Average"
+    value_template: "{{ (states('sensor.wind_speed_average') | round(2) * 2.2369) | round(1) }}"
+    unit_of_measurement: 'mph'
