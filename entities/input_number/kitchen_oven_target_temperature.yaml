@@ -1,0 +1,8 @@
+kitchen_oven_target_temperature:
+  name: Oven Target Temperature
+  min: 0
+  max: 350
+  step: 5
+  mode: slider
+  unit_of_measurement: °C
+  icon: mdi:stove
