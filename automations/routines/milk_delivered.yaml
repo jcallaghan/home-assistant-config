@@ -1,0 +1,14 @@
+alias: Milk delivered notification
+
+trigger:
+
+  - platform: state
+    entity_id: binary_sensor.spare_vibration
+    to: 'on'
+
+action:
+
+  - service: notify.ios_james_iphone
+    data_template:
+      title: 🥛 Milk delivered 🥛
+      message: "The milk was delivered at {{ states('sensor.time') }}."
