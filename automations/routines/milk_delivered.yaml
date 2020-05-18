@@ -1,14 +1,32 @@
-alias: Milk delivered notification
+alias: Milk - Delivered notification
 
 trigger:
 
   - platform: state
-    entity_id: binary_sensor.spare_vibration
+    entity_id: binary_sensor.milk_bottle_vibration
     to: 'on'
+
+condition:
+  condition: and
+  conditions:
+
+    # only trigger during the night
+    - condition: time
+      after: '12:00:00'
+      before: '07:00:00'
+
+    # only trigger if the milk bottle holder has been placed on the doorstep
+    - condition: state
+      entity_id: binary_sensor.milk_bottle_contact
+      state: 'off'
+
+    # only run once over night (21,600 = 6 hours)
+    - condition: template
+      value_template: "{{ (as_timestamp(states.sensor.date_time.last_changed) - (as_timestamp(state_attr('automation.milk_delivered_notification','last_triggered')))) > 21600 }}"
 
 action:
 
   - service: notify.ios_james_iphone
     data_template:
-      title: 🥛 Milk delivered 🥛
+      title: 🥛 Milk delivered
       message: "The milk was delivered at {{ states('sensor.time') }}."
