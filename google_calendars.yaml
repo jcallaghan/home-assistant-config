@@ -1,0 +1,10 @@
+# House Calendar
+- cal_id: !secret google_calendar_house
+  entities:
+
+  - device_id: house_milkman
+    ignore_availability: true
+    name: Milkman
+    track: true
+    search: '*milkman*'
+    max_results: 20
