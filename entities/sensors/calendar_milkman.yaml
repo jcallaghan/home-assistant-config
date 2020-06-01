@@ -1,0 +1,17 @@
+platform: template
+sensors:
+
+  calendar_house_milkman:
+    friendly_name: 'Milkman'
+    value_template: >
+      {{ state_attr('calendar.house_milkman','message') }}
+    attribute_templates:
+      description: >-
+        {{ state_attr('calendar.house_milkman','description') }}
+      location: >-
+        {{ state_attr('calendar.house_milkman','location') }}
+      start_time: >-
+        {{ state_attr('calendar.house_milkman','start_time') }}
+      end_time: >-
+        {{ state_attr('calendar.house_milkman','end_time') }}
+    icon_template: mdi:truck

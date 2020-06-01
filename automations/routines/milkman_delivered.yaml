@@ -1,0 +1,41 @@
+alias: Milkman - Milk delivered notification
+
+trigger:
+
+  - platform: state
+    entity_id: binary_sensor.milk_bottle_vibration
+    to: 'on'
+
+  - platform: state
+    entity_id: binary_sensor.milk_bottle_contact
+
+condition:
+  condition: and
+  conditions:
+
+    # only trigger during the night
+    - condition: time
+      after: '12:00:00'
+      before: '07:00:00'
+
+    # only trigger on milk day
+    - condition: state
+      entity_id: calendar.house_milkman
+      state: 'on'
+
+    # only trigger if the milk bottle holder has been placed on the doorstep
+    - condition: state
+      entity_id: binary_sensor.milk_bottle_contact
+      state: 'off'
+
+    # useful if you are using notifications but as I am using the logbox I don't need to throttle this
+    # only run once over night (21,600 = 6 hours)
+    # - condition: template
+    #   value_template: "{{ (as_timestamp(states.sensor.date_time.last_changed) - (as_timestamp(state_attr('automation.milk_delivered_notification','last_triggered')))) > 21600 }}"
+
+action:
+
+  - service: logbook.log
+    data_template:
+      name: 🥛 Milkman
+      message: "The milk was delivered at {{ states('sensor.time') }}."
