@@ -1,7 +1,7 @@
 ---
 name: 'Hardware: New device'
 about: Capture information about a new piece of hardware.
-title: ''
+title: 'Hardware: '
 labels: documentation, things
 assignees: ''
 
@@ -17,7 +17,7 @@ assignees: ''
 | ... | ... | ...| 00/00/2020 |
 
 <!--
-  Website. Driver. Joining instructions. 
+  Website. Driver. Joining instructions. Flashing. 
 -->
 
 # Ideas
@@ -26,5 +26,5 @@ assignees: ''
 -->
 
 <!--
-  Upload an image
+  Upload an product image, wiring and flashing pins etc
 -->
