@@ -1,0 +1,7 @@
+platform: template
+sensors:
+
+  code_sensors:
+    friendly_name: 'Total Sensors'
+    value_template: >
+      {{ states.sensor | list | count }}

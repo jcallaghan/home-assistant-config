@@ -1,0 +1,7 @@
+platform: template
+sensors:
+
+  code_devices:
+    friendly_name: 'Total Devices'
+    value_template: >
+      {{ states.device_tracker | list | count }}

@@ -1,0 +1,7 @@
+platform: template
+sensors:
+
+  code_script:
+    friendly_name: 'Total Scripts'
+    value_template: >
+      {{ states.script | list | count }}
