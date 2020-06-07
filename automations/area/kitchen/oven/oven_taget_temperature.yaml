@@ -1,0 +1,61 @@
+alias: 'Kitchen - Oven at target temperature'
+
+trigger:
+
+  # Oven above target temperature
+
+  - platform: state
+    entity_id: sensor.esph_kitchen_oven_ambient_temperature
+
+condition:
+
+  condition: and
+  conditions:
+
+    # check the automation has not run within last 2 mins
+    - condition: template
+      value_template: "{{ (as_timestamp(states.sensor.date_time.last_changed) - (as_timestamp(state_attr('automation.kitchen_oven_at_target_temperature','last_triggered')))) > 120 }}"
+
+    #  Oven is above room temperature and therefore in-use
+    - condition: numeric_state
+      entity_id: sensor.esph_kitchen_oven_ambient_temperature
+      above: 30
+
+    #  Oven target temperature is set (0 is not in use)
+    - condition: template
+      value_template: "{{ states('input_number.kitchen_oven_target_temperature') | int != 0 }}"
+
+action:
+
+  - service: notify.html5_notification
+    data_template:
+      title: "Oven temperature"
+      message: >
+        {% if states('sensor.esph_kitchen_oven_ambient_temperature') | int < (states('input_number.kitchen_oven_target_temperature') | int - 10) %}
+        The oven is under temperature at {{ states('sensor.esph_kitchen_oven_ambient_temperature') }}°C ⬇️.
+        The target temperature is set to {{ states('input_number.kitchen_oven_target_temperature') }}°C.
+        {% elif states('sensor.esph_kitchen_oven_ambient_temperature') | int > (states('input_number.kitchen_oven_target_temperature') | int + 10) %}
+        The oven is over temperature at {{ states('sensor.esph_kitchen_oven_ambient_temperature') }}°C ⬆️.
+        The target temperature is set to {{ states('input_number.kitchen_oven_target_temperature') }}°C.
+        {% elif states('sensor.esph_kitchen_oven_ambient_temperature') | int > (states('input_number.kitchen_oven_target_temperature') | int - 10) and states('sensor.esph_kitchen_oven_ambient_temperature') | int < (states('input_number.kitchen_oven_target_temperature') | int + 10) %}
+        The oven temperature is within range at {{ states('sensor.esph_kitchen_oven_ambient_temperature') }}°C ⬇️.
+        The target temperature is set to {{ states('input_number.kitchen_oven_target_temperature') }}°C.
+        {% endif %}
+
+  - service: notify.mobile_app_jamess_iphone
+    data_template:
+      title: "Oven temperature"
+      message: >
+        {% if states('sensor.esph_kitchen_oven_ambient_temperature') | int < (states('input_number.kitchen_oven_target_temperature') | int - 10) %}
+        The oven is under temperature at {{ states('sensor.esph_kitchen_oven_ambient_temperature') }}°C ⬇️.
+        The target temperature is set to {{ states('input_number.kitchen_oven_target_temperature') }}°C.
+        {% elif states('sensor.esph_kitchen_oven_ambient_temperature') | int > (states('input_number.kitchen_oven_target_temperature') | int + 10) %}
+        The oven is over temperature at {{ states('sensor.esph_kitchen_oven_ambient_temperature') }}°C ⬆️.
+        The target temperature is set to {{ states('input_number.kitchen_oven_target_temperature') }}°C.
+        {% elif states('sensor.esph_kitchen_oven_ambient_temperature') | int > (states('input_number.kitchen_oven_target_temperature') | int - 10) and states('sensor.esph_kitchen_oven_ambient_temperature') | int < (states('input_number.kitchen_oven_target_temperature') | int + 10) %}
+        The oven temperature is within range at {{ states('sensor.esph_kitchen_oven_ambient_temperature') }}°C ⬇️.
+        The target temperature is set to {{ states('input_number.kitchen_oven_target_temperature') }}°C.
+        {% endif %}
+      data:
+        apns_headers:
+          apns-collapse-id: "oven_temp"
