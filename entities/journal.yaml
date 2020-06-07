@@ -1,0 +1,4 @@
+journal:
+  name: "Journal"
+  icon: mdi:lead-pencil
+  max: 255
