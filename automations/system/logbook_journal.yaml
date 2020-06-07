@@ -1,0 +1,30 @@
+alias: System - Logbook Journal
+
+trigger:
+
+  - platform: state
+    entity_id: input_text.journal
+
+condition:
+
+  # only trigger if the journal isn't empty
+  - condition: template
+    value_template: "{{ trigger.from_state.state != '' }}"
+
+action:
+
+  # add text to logbook
+  - service: logbook.log
+    data_template:
+      name: "Journal"
+      message: "{{ trigger.from_state.state }}"
+      entity_id: input_text.journal
+
+  # pause to allow the entry to be seen for a moment before it is cleared
+  - delay: 00:00:05
+
+  # clear text field ready for next use
+  - service: input_text.set_value
+    data:
+      entity_id: input_text.journal
+      value: ""
