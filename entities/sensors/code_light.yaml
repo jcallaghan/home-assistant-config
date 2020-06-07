@@ -1,0 +1,7 @@
+platform: template
+sensors:
+
+  code_light:
+    friendly_name: 'Total Lights'
+    value_template: >
+      {{ states.light | list | count }}
