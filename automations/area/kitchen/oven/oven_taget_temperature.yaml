@@ -16,10 +16,10 @@ condition:
     - condition: template
       value_template: "{{ (as_timestamp(states.sensor.date_time.last_changed) - (as_timestamp(state_attr('automation.kitchen_oven_at_target_temperature','last_triggered')))) > 120 }}"
 
-    #  Oven is above room temperature and therefore in-use
+    #  Oven is 100 temperature and therefore in-use
     - condition: numeric_state
       entity_id: sensor.esph_kitchen_oven_ambient_temperature
-      above: 30
+      above: 100
 
     #  Oven target temperature is set (0 is not in use)
     - condition: template
