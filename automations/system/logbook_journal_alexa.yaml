@@ -1,0 +1,35 @@
+alias: System - Logbook Journal (Alexa, log a bug)
+
+trigger:
+
+  - platform: state
+    entity_id: light.alexa_virtual
+    to: 'on'
+
+condition:
+
+  - condition: template
+    value_template: "{{ (state_attr('light.alexa_virtual','brightness') | int / 255 * 100) | round  == 5 }}"
+
+action:
+
+  - service: alexa_media.update_last_called
+
+  - delay: 00:00:01
+
+  - service: logbook.log
+    data_template:
+      name: "Journal"
+      message: "{{ states('sensor.alexa_last_used') }}"
+      entity_id: input_text.journal
+
+  - service: notify.mobile_app_jamess_iphone
+    data_template:
+      title: "Bug reported"
+      message: "New bug reported in via {{ states('sensor.alexa_last_used') | replace('media_player.alexa_','') | replace('_alexa','')  | replace('_sonos','')  }} Alexa."
+      data:
+        apns_headers:
+          apns-collapse-id: "info"
+
+  - service: light.turn_off
+    entity_id: light.alexa_virtual
