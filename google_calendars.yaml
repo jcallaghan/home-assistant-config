@@ -2,6 +2,13 @@
 - cal_id: !secret google_calendar_house
   entities:
 
+  - device_id: house_bin
+    ignore_availability: true
+    name: Bin
+    track: true
+    search: '* Bin'
+    max_results: 20
+    
   - device_id: house_milkman
     ignore_availability: true
     name: Milkman
