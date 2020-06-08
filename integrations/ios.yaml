@@ -1,0 +1,36 @@
+# https://www.home-assistant.io/components/ios/
+# https://www.home-assistant.io/docs/ecosystem/ios/
+# Don't forget to refresh categories on devices when new ones are defined.
+
+ios:
+  push:
+    categories: 
+
+      - name: Volvo Actions
+        identifier: 'volvo_actions'
+        actions:
+
+          - identifier: 'volvo_lock'
+            title: 'Lock'
+            authenticationRequired: false
+            destructive: true
+            behavior: 'default'
+            activationMode: 'background'
+
+          - identifier: 'volvo_unlock'
+            title: 'Unlock'
+            authenticationRequired: true
+            destructive: true
+            activationMode: 'background'
+
+          - identifier: 'volvo_warm'
+            title: 'Warm'
+            authenticationRequired: true
+            destructive: false
+            activationMode: 'background'
+
+          - identifier: 'volvo_start'
+            title: 'Start'
+            authenticationRequired: true
+            destructive: false
+            activationMode: 'background'
