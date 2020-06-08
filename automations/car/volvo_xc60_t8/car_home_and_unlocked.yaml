@@ -1,0 +1,104 @@
+alias: 'James Car - Home and unlocked'
+id: 'james_car_home_and_unlocked'
+
+trigger:
+
+  # Trigger every 2 minutes to fall with in throttle window
+  - platform: time_pattern
+    minutes: "00:02:00"
+
+  # Trigger in there is motion out the front or in the hall
+  - platform: state
+    entity_id:
+      - binary_sensor.hall_motion
+      - binary_sensor.front_door_outdoor_motion
+
+condition:
+
+  condition: and
+  conditions:
+
+    # Throttle message every 3 minutes
+    - condition: template
+      value_template: "{{ (as_timestamp(states.sensor.date_time.last_changed) - (as_timestamp(state_attr('automation.james_car_home_and_unlocked','last_triggered')))) > 180 }}"
+
+    # Vehicle is home
+    - condition: state
+      entity_id: !secret volvo_tracker
+      state: 'home'
+
+    - condition: or
+      conditions:
+
+        # Vehicle is unlocked
+        - condition: state
+          entity_id: !secret volvo_lock
+          state: 'unlocked'
+
+        # Doors open
+        - condition: state
+          entity_id: !secret volvo_doors
+          state: 'open'
+
+        # Windows open
+        - condition: state
+          entity_id: !secret volvo_windows
+          state: 'open'
+
+action:
+
+  # Actionable notification
+  - service: notify.mobile_app_jamess_iphone
+    data_template:
+      title: "🚨 Car unlocked"
+      message: "The car is unlocked."
+      data:
+        apns_headers:
+          apns-collapse-id: "james_car"
+        push:
+          category: 'volvo_actions'
+
+  # Increment notification counter
+  - service: counter.increment
+    entity_id: counter.james_car_unlocked_notifications
+
+  # After 2 (6 mins) alerts use tts
+  - condition: numeric_state
+    entity_id: counter.james_car_unlocked_notifications
+    above: 2
+
+  # Call TTS script which will only run when house is not in quiet mode
+  - service: script.james_car_home_and_unlocked_tts
+
+  # After 3 (9 mins) automatically lock the vehicle
+  - condition: numeric_state
+    entity_id: counter.james_car_unlocked_notifications
+    above: 3
+
+  # Lock car
+  - service: lock.lock
+    data:
+      entity_id: !secret volvo_lock
+
+  # Notification to say car locked
+  - service: notify.mobile_app_jamess_iphone
+    data_template:
+      title: "🚨 Car unlocked"
+      message: "James' car automatically locked."
+      data:
+        apns_headers:
+          apns-collapse-id: "james_car"
+        push:
+          category: 'volvo_actions'
+
+  # TTS to say car locked
+  - service: "notify.alexa_media_james_desk"
+    data_template:
+      message: "James' car automatically locked."
+      data:
+        type: 'announce'
+        method: 'all'
+
+  # Reset notification counter
+  - service: counter.reset
+    entity_id: counter.james_car_unlocked_notifications
