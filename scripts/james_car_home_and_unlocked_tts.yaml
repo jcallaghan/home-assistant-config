@@ -1,0 +1,15 @@
+james_car_home_and_unlocked_tts:
+  alias: James' car home and unlocked TTS
+  sequence:
+
+    # ****
+    # Replace this with the media player in the room last used.
+    # Consider replacing it with a script. This way quiet hours can be considered.
+    # ****
+
+    - service: "notify.alexa_media_james_desk"
+      data_template:
+        message: "James' car is unlocked."
+        data:
+          type: 'announce'
+          method: 'all'
