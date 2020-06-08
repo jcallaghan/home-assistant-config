@@ -62,18 +62,18 @@ action:
   - service: counter.increment
     entity_id: counter.james_car_unlocked_notifications
 
-  # After 2 (6 mins) alerts use tts
+  # After 1 (6 mins) alerts use tts
   - condition: numeric_state
     entity_id: counter.james_car_unlocked_notifications
-    above: 2
+    above: 1
 
   # Call TTS script which will only run when house is not in quiet mode
   - service: script.james_car_home_and_unlocked_tts
 
-  # After 3 (9 mins) automatically lock the vehicle
+  # After 2 (9 mins) automatically lock the vehicle
   - condition: numeric_state
     entity_id: counter.james_car_unlocked_notifications
-    above: 3
+    above: 2
 
   # Lock car
   - service: lock.lock
