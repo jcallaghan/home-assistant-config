@@ -1,0 +1,40 @@
+alias: 'James Car - Home and unlocked action'
+
+trigger:
+
+  # Trigger with actions defined in ios.yaml
+  - platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: VOLVO_LOCK
+
+action:
+
+  # Lock car
+  - service: lock.lock
+    data:
+      entity_id: !secret volvo_lock
+
+  # Send message to replacable notification
+  - service: notify.mobile_app_jamess_iphone
+    data:
+      title: "🚨 Car unlocked"
+      message: "The car has been locked."
+      data:
+        apns_headers:
+          apns-collapse-id: "car_volvo"
+
+  # Notification to say car locked
+  # ***
+  # replace with script approach used above
+  # ***
+  - service: "media_player.alexa_james_desk"
+    data:
+      message: "James' car has now been locked."
+      data:
+        type: 'announce'
+        method: 'all'
+
+  # Reset notification counter
+  - service: counter.reset
+    entity_id: counter.james_car_unlocked_notifications
