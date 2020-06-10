@@ -1,0 +1,71 @@
+alias: Bin emptied
+
+trigger:
+
+  # Vibration [x open: 7; closed: 6]; [y open: -3; closed: -2]; [z open: -82; closed: -83];
+  - platform: numeric_state
+    entity_id: binary_sensor.black_bin_vibration
+    value_template: "{{ state_attr('binary_sensor.black_bin_vibration','orientation')[0] | int }}"
+    above: 7
+
+  # Tilt angle is [~8 when closed]; [~20-110 lifted]; [~360 when open]
+  - platform: numeric_state
+    entity_id: binary_sensor.black_bin_vibration
+    value_template: "{{ state_attr('binary_sensor.black_bin_vibration','tiltangle') }}"
+    above: 200
+
+  # Vibration spikes to [~45 when slammed]; [~6 when idle]
+  - platform: numeric_state
+    entity_id: binary_sensor.black_bin_vibration
+    value_template: "{{ state_attr('binary_sensor.black_bin_vibration','vibrationstrength') }}"
+    above: 40
+
+condition:
+
+  condition: and
+  conditions:
+
+    # Only trigger if it is bin day via the calendar
+    - condition: state
+      entity_id: calendar.house_bin
+      state: 'on'
+
+    # Only notify during the day as that is when the collection typically happens
+    - condition: time
+      after: '08:00:00'
+      before: '16:00:00'
+
+    # Vibration hasn't been detected in the last 1 hour
+    - condition: template
+      value_template: "{{ (as_timestamp(states.sensor.date_time.last_changed) - (as_timestamp(states.binary_sensor.black_bin_vibration.last_changed))) > 3600 }}"
+
+    # Tilt angle is ~8 when closed, ~20-110 lifted and ~360 when open
+    - condition: numeric_state
+      entity_id: binary_sensor.black_bin_vibration
+      value_template: "{{ state_attr('binary_sensor.black_bin_vibration','tiltangle') }}"
+      above: 200
+
+action:
+
+  # HTML5 all devices
+  - service: notify.html5_notification
+    data_template:
+      title: "Bin Day - Bin emptied"
+      message: "The {{ states('sensor.calendar_house_bin') | lower }} has been emptied."
+
+  # Replacable notification
+  - service: notify.mobile_app_jamess_iphone
+    data_template:
+      title: "Bin Day - Bin emptied"
+      message: "The {{ states('sensor.calendar_house_bin') | lower }} has been emptied."
+      data:
+        apns_headers:
+          apns-collapse-id: "bin_day"
+
+  # TTS notification
+  - service: "notify.alexa_media_james_desk"
+    data_template:
+      message: "The bin has just been emptied."
+      data:
+        type: 'announce'
+        method: 'all'

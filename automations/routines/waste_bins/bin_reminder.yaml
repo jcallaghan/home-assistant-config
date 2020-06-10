@@ -1,0 +1,52 @@
+alias: Bin notification
+
+trigger:
+
+  # First notification
+  - platform: time
+    at: '07:45:00'
+
+  # Movement in the hall/landing
+  - platform: state
+    entity_id:
+      - binary_sensor.hall_motion
+      - binary_sensor.landing_motion
+    to: 'on'
+
+condition:
+
+  condition: and
+  conditions:
+
+    # Only trigger if it is bin day via the calendar
+    - condition: state
+      entity_id: calendar.house_bin
+      state: 'on'
+
+    # Only notify during early morning as that is when the collectional typically happens
+    - condition: time
+      after: '06:00:00'
+      before: '10:00:00'
+
+    # Vibration hasn't been detected in the last 4 hours
+    - condition: template
+      value_template: "{{ (as_timestamp(states.sensor.date_time.last_changed) - (as_timestamp(states.binary_sensor.black_bin_vibration.last_changed))) > 14400 }}"
+
+    # Throttle notifications (every 25 minutes)
+    - condition: template
+      value_template: "{{ (as_timestamp(states.sensor.date_time.last_changed) - (as_timestamp(state_attr('automation.bin_notification','last_triggered')))) > 1500 }}"
+
+action:
+
+  - service: notify.html5_notification
+    data_template:
+      title: Bin Day
+      message: The {{ states('sensor.calendar_house_bin') | lower }} is being collected today.
+
+  - service: notify.mobile_app_jamess_iphone
+    data_template:
+      title: Bin Day
+      message: The {{ states('sensor.calendar_house_bin') | lower }} is being collected today.
+      data:
+        apns_headers:
+          apns-collapse-id: "bin_day"
