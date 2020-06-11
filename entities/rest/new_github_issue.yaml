@@ -1,0 +1,6 @@
+new_github_issue:
+  url: https://api.github.com/repos/jcallaghan/home-assistant-config/issues
+  method: POST
+  headers:
+    Authorization: !secret github_token
+  payload: '{"title":"{{ title }}","body":"{{ message }}"}'
