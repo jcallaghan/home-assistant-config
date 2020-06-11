@@ -3,4 +3,4 @@ new_github_issue:
   method: POST
   headers:
     Authorization: !secret github_token
-  payload: '{"title":"{{ title }}","body":"{{ message }}","labels":"{{ labels }}"}'
+  payload: '{"title":"{{ title }}","body":"{{ message }}"}'
