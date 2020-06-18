@@ -1,0 +1,28 @@
+platform: template
+sensors:
+
+  battery_low:
+    friendly_name: 'Battery Low'
+    entity_id:
+      - group.battery_all
+    value_template: >
+      {%- set threshold_high = 20 -%}
+      {%- set threshold_low = 10 -%}
+      {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'lock', 'binary_sensor'] -%}
+      {%- for domain in domains -%}
+        {%- for item in states[domain] if ((item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold_high and item.attributes['battery_level'] | int >= threshold_low) or ("battery" in item.name | lower and ((item.state | int < threshold_high and item.state | int >= threshold_low and item.state | int != 0) and item.state | lower != "low" and item.state | lower != "unavailable" and item.state | lower != "unknown") and item.name != "Meater #0 Battery")) -%}
+          {{ item.attributes.friendly_name | replace(" Battery Level","") }}{{ " (" }}
+          {%- if item.attributes.battery_level is defined -%}
+            {{ item.attributes.battery_level}}
+          {%- else -%}
+            {{item.state}}
+          {%- endif -%}
+          {%- if item.state | lower == "low" or item.state | lower == "unavailable" or item.state | lower == "discharging" or item.state | lower == "unknown" -%}
+            {{ ")" }}
+          {%- else -%}
+            {{ "%)" }}
+          {%- endif -%}
+          {%- if not loop.last -%}{{ ", " }}{% else %}{{ "." }}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
