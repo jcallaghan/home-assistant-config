@@ -1,0 +1,45 @@
+alias: Infrastructure - Battery Low
+
+trigger:
+
+  # Catch sensors when they fall into this range
+  - platform: state
+    entity_id: sensor.battery_unavailable
+
+  # Motion in the hall is always a timely reminder as it is a busy room
+  - platform: state
+    entity_id: binary_sensor.hall_motion
+    to: 'on'
+
+  # Always run once a day
+  - platform: time
+    at: '12:30:00'
+
+condition:
+
+  # Only trigger if there is a sensor that is low
+  - condition: template
+    value_template: "{% if states('sensor.battery_low') %}true{% endif %}"
+
+  # Only send a notication once every 4 hours
+  - condition: template
+    value_template: "{{ (as_timestamp(states.sensor.date_time.last_changed) - (as_timestamp(state_attr('automation.infrastructure_battery_low','last_triggered')))) > 14400 }}"
+
+  # When someone is home (consider if adult is home or me as I'm the only one that really cares)
+  # This also respect quite hours as it won't run at night.
+  - condition: state
+    entity_id: alarm_control_panel.ring_mqtt_alarm
+    state: 'Disarmed'
+
+action:
+
+  # Todo
+  # Notification engine
+
+  - service: notify.mobile_app_james_iphonexs_max
+    data_template:
+      title: "🔋 Battery Low"
+      message: "Low battery reported by: {{ states('sensor.battery_low') }}"
+      data:
+        apns_headers:
+          apns-collapse-id: "battery_low"
