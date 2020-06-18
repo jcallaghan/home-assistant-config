@@ -1,0 +1,16 @@
+platform: template
+sensors:
+
+  battery_unavailable:
+    friendly_name: 'Battery Unavailable'
+    entity_id:
+      - group.battery_all
+    value_template: >
+      {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'lock', 'binary_sensor'] -%}
+      {%- for domain in domains -%}
+        {%- for item in states[domain] if ((item.attributes.battery_level is defined and item.attributes['battery_level'] == "Unavailable") or ("battery" in item.name | lower) and (item.state | lower == "low" or item.state | lower == "unavailable" or item.state | lower == "unknown") and item.name != "Meater #0 Battery" and item.name != "Battery Low" and item.name != "Battery Critical" and item.name != "Battery Unavailable") -%}
+          {{ item.attributes.friendly_name | replace(" Battery Level","") | replace(" Contact","") | replace(" Sensor","") }}
+          {%- if not loop.last -%}{{ ", " }}{% else %}{{ "" }}{%- endif -%}
+        {%- endfor -%}
+        {%- if loop.last -%}{{ "." }}{%- endif -%}
+      {%- endfor -%}
