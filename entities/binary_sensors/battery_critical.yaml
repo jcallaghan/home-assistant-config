@@ -1,0 +1,9 @@
+platform: template
+sensors:
+  battery_critical:
+    friendly_name: 'Battery Critical'
+    entity_id: sensor.battery_critical
+    device_class: problem
+    value_template: "{% if states('sensor.battery_critical') | count == 0 %}False{% else %}True{% endif %}"
+    attribute_templates:
+      batteries_critical: "{{ states('sensor.battery_critical') }}"

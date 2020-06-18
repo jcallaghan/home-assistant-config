@@ -1,0 +1,9 @@
+platform: template
+sensors:
+  battery_unavailable:
+    friendly_name: 'Battery Unavailable'
+    entity_id: sensor.battery_unavailable
+    device_class: battery
+    value_template: "{% if states('sensor.battery_unavailable') | count == 0 %}False{% else %}True{% endif %}"
+    attribute_templates:
+      batteries_unavailable: "{{ states('sensor.battery_unavailable') }}"

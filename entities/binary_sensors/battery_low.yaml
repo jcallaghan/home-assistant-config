@@ -1,0 +1,9 @@
+platform: template
+sensors:
+  battery_low:
+    friendly_name: 'Battery Low'
+    entity_id: sensor.battery_low
+    device_class: battery
+    value_template: "{% if states('sensor.battery_low') | count == 0 %}False{% else %}True{% endif %}"
+    attribute_templates:
+      batteries_low: "{{ states('sensor.battery_low') }}"

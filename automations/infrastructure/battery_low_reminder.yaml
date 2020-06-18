@@ -1,0 +1,122 @@
+alias: Infrastructure - Battery Low Reminder
+
+trigger:
+
+  - platform: numeric_state
+    entity_id:
+      - sensor.back_garden_camera_battery
+      - sensor.backdoor_camera_battery
+      - sensor.back_garden_temperature_battery_level
+      - sensor.outhouse_door_contact_battery_level
+      - sensor.patio_outdoor_motion_battery_level
+      - sensor.backdoor_outdoor_motion_battery_level
+      - sensor.back_garden_outdoor_motion_battery_level
+      - sensor.back_garden_cushions_contact_sensor_battery_level
+      - sensor.backdoor_keys_contact_battery_level
+      - sensor.kitchen_door_contact_battery_level
+      - sensor.kitchen_window_contact_battery_level
+      - sensor.kitchen_temperature_battery_level
+      - sensor.kitchen_motion_battery_level
+      - sensor.fridge_door_contact_battery_level
+      - sensor.fridge_temperature_battery_level
+      - sensor.freezer_door_contact_battery_level
+      - sensor.freezer_temperature_battery_level
+      - sensor.kitchen_light_switch_battery_level
+      - sensor.patio_door_left_contact_battery_level
+      - sensor.patio_door_right_contact_battery_level
+      - sensor.patio_door_keys_contact_battery_level
+      - sensor.dining_room_motion_battery_level
+      - sensor.treat_cupboard_door_contact_battery_level
+      - sensor.dining_room_window_contact_battery_level
+      - sensor.dining_room_light_switch_battery_level
+      - sensor.dining_room_temperature_battery_level
+      - sensor.interior_door_contact_battery_level
+      - sensor.workbench_switch_battery_level
+      - sensor.front_door_letter_box_vibration_battery_level
+      - sensor.front_door_contact_battery_level
+      - sensor.hall_motion_battery_level
+      - sensor.hall_light_switch_battery_level
+      - sensor.washing_machine_door_contact_battery_level
+      - sensor.washing_machine_cupboard_motion_battery_level
+      - sensor.understairs_cupboard_motion_battery_level
+      - sensor.landing_motion_battery_level
+      - sensor.landing_light_switch_battery_level
+      - sensor.front_door_keys_contact_battery_level
+      - sensor.living_room_window_left_contact_battery_level
+      - sensor.living_room_window_right_contact_battery_level
+      - sensor.living_room_motion_battery_level
+      - sensor.living_room_motion_battery_level
+      - sensor.lan_cupboard_temperature_battery_level
+      - sensor.living_room_light_switch_battery_level
+      - sensor.front_door_outdoor_motion_battery_level
+      - sensor.black_bin_vibration_battery_level
+      - sensor.bathroom_door_contact_battery_level
+      - sensor.bathroom_window_left_contact_battery_level
+      - sensor.bathroom_window_right_contact_battery_level
+      - sensor.bathroom_motion_battery_level
+      - sensor.toilet_seat_contact_battery_level
+      - sensor.toilet_seat_vibration_battery_level
+      - sensor.toilet_flusher_contact_battery_level
+      - sensor.bathroom_sink_water_sensor_battery_level
+      - sensor.bath_water_sensor_battery_level
+      - sensor.bathroom_light_switch_battery_level
+      - sensor.bathroom_temperature_battery_level
+      - sensor.bathroom_cupboard_contact_battery_level
+      - sensor.bathroom_mi_magic_cube_battery_level
+      - sensor.florence_bedroom_door_contact_battery_level
+      - sensor.florence_bedroom_window_contact_battery_level
+      - sensor.florence_bedroom_motion_battery_level
+      - sensor.florence_bedroom_light_switch_battery_level
+      - sensor.florence_dimmer_switch_battery_level
+      - sensor.guest_bedroom_light_switch_battery_level
+      - sensor.guest_bedroom_motion_battery_level
+      - sensor.guest_bedroom_window_contact_battery_level
+      - sensor.bedroom_motion_battery_level
+      - sensor.bedroom_window_left_contact_battery_level
+      - sensor.bedroom_window_right_contact_battery_level
+      - sensor.bedroom_light_switch_battery_level
+      - sensor.bedroom_wall_light_switch_battery_level
+      - sensor.bedroom_temperature_battery_level
+      - sensor.bedroom_button_switch_battery_level
+      - sensor.milk_bottle_contact_battery_level
+      - sensor.milk_bottle_vibration_battery_level
+      - sensor.weather_station_rain_sensor_battery_level
+      - sensor.weather_station_temperature_battery_leve
+      - sensor.3d_printer_temperature_battery_level
+    below: 20
+    above: 10
+    
+  # Todo
+  # Move away from the long list of entities
+  # Incorporate entities where the battery level is an attribute (leverage the template for loop)
+
+condition:
+
+  # no conditions as I want this to run each time a sensor becomes low
+
+action:
+
+  # GitHub create battery issue
+  - service: rest_command.github_new_issue_replace_battery
+    data_template:
+      title: "{{ trigger.from_state.name | replace(' Battery Level','') }} has low battery"
+      message: "Low battery reported by: {{ trigger.from_state.name | replace(' Battery Level','') }} has a low battery."
+
+  # Todo
+  # Notification engine
+
+  # Notify James' phone
+  - service: notify.mobile_app_james_iphonexs_max
+    data_template:
+      title: "🔋 Battery Low"
+      message:  "{{ trigger.from_state.name | replace(' Battery Level','') }} has a low battery."
+      data:
+        apns_headers:
+          apns-collapse-id: "battery_low"
+
+  # Persistant notification
+  - service: persistent_notification.create
+    data_template:
+      title: "🔋 Low Battery"
+      message:  "{{ trigger.from_state.name | replace(' Battery Level','') }} has a low battery."
+      notification_id: home_assistant_upgrade
