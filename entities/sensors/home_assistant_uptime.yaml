@@ -10,13 +10,14 @@ sensors:
       {% set minutes = (totalminutes % 60) | round(0,'floor') %}
       {% set days = (hours / 24) | round(0,'floor') %}
       {% set weeks = (days / 7) | round(0,'floor') %}
+      {% set todayhours = hours - (days * 24) | round(0,'floor') %}
 
       {% if totalminutes <= 59 %}
       00:00:{% if minutes <= 9 %}0{{ minutes }}{% else %}{{ minutes }}{% endif %}
       {% elif totalminutes >= 60 and totalminutes <= 1400 %}
       00:{% if hours <= 9 %}0{{ hours }}{% else %}{{ hours }}{% endif %}:{% if minutes <= 9 %}0{{ minutes }}{% else %}{{ minutes }}{% endif %}
       {% elif totalminutes >= 1401 and totalminutes <= 9800 %}
-      {% if days <= 9 %}0{{ days }}{% else %}{{ days }}{% endif %}:{{ hours - (days * 24) | round(0,'floor') }}:{% if minutes <= 9 %}0{{ minutes }}{% else %}{{ minutes }}{% endif %}
+      {% if days <= 9 %}0{{ days }}{% else %}{{ days }}{% endif %}:{% if todayhours <= 9 %}0{{ todayhours }}{% else %}{{ todayhours }}{% endif %}:{% if minutes <= 9 %}0{{ minutes }}{% else %}{{ minutes }}{% endif %}
       {% endif %}
     attribute_templates:
       last_started: >-
