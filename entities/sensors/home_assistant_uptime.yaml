@@ -22,3 +22,18 @@ sensors:
     attribute_templates:
       last_started: >-
         {{ states('input_datetime.home_assistant_started') }}
+      friendly: >-
+        {% set totalminutes = (as_timestamp(now()) - as_timestamp(states('input_datetime.home_assistant_started'))) / 60 %}
+        {% set hours = (totalminutes / 60) | round(0,'floor') %}
+        {% set minutes = (totalminutes % 60) | round(0,'floor') %}
+        {% set days = (hours / 24) | round(0,'floor') %}
+        {% set weeks = (days / 7) | round(0,'floor') %}
+        {% set todayhours = hours - (days * 24) | round(0,'floor') %}
+
+        {% if totalminutes <= 59 %}
+        {% if minutes <= 9 %}{{ minutes }}{% else %}{{ minutes }}{% endif %} minutes
+        {% elif totalminutes >= 60 and totalminutes <= 1400 %}
+        {% if hours <= 9 %}0{{ hours }}{% else %}{{ hours }}{% endif %} hours {% if minutes <= 9 %}0{{ minutes }}{% else %}{{ minutes }}{% endif %} minutes
+        {% elif totalminutes >= 1401 and totalminutes <= 9800 %}
+        {% if days <= 9 %}0{{ days }}{% else %}{{ days }}{% endif %} days {% if todayhours <= 9 %}0{{ todayhours }}{% else %}{{ todayhours }}{% endif %} hours {% if minutes <= 9 %}0{{ minutes }}{% else %}{{ minutes }}{% endif %} minutes
+        {% endif %}
