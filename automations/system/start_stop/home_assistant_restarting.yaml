@@ -1,0 +1,19 @@
+alias: 'System - Home Assistant Restarting'
+
+trigger:
+
+  - platform: homeassistant
+    event: shutdown
+
+action:
+
+  - service: notify.html5_notification
+    data_template:
+      message: "Home Assistant is restarting."
+
+  - service: notify.ios_james_iphone
+    data_template:
+      message: "Home Assistant is restarting."
+      data:
+        apns_headers:
+          apns-collapse-id: "system"
