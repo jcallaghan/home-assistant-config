@@ -16,7 +16,7 @@ action:
     data_template:
       message: "Home Assistant has started"
 
-  - service: notify.ios_james_iphone
+  - service: notify.mobile_app_james_iphone
     data_template:
       message: "Home Assistant has started."
       data:
