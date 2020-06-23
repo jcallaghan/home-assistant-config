@@ -9,11 +9,11 @@ action:
 
   - service: notify.html5_notification
     data_template:
-      message: "Home Assistant is restarting. It was up for {{ states('sensor.home_assistant_uptime') }}."
+      message: "Home Assistant is restarting. It was up for {{ state_attr('sensor.home_assistant_uptime','friendly') }}."
 
   - service: notify.mobile_app_james_iphone
     data_template:
-      message: "Home Assistant is restarting. It was up for {{ states('sensor.home_assistant_uptime') }}."
+      message: "Home Assistant is restarting. It was up for {{ state_attr('sensor.home_assistant_uptime','friendly') }}."
       data:
         apns_headers:
           apns-collapse-id: "system"
