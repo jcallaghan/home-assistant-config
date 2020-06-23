@@ -1,0 +1,19 @@
+alias: 'System - Home Assistant Started'
+
+trigger:
+
+  - platform: homeassistant
+    event: start
+
+action:
+
+  - service: notify.html5_notification
+    data_template:
+      message: "Home Assistant has started"
+
+  - service: notify.ios_james_iphone
+    data_template:
+      message: "Home Assistant has started."
+      data:
+        apns_headers:
+          apns-collapse-id: "system"
