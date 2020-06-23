@@ -1,0 +1,4 @@
+home_assistant_started:
+  name: Started
+  has_date: true
+  has_time: true
