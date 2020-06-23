@@ -11,7 +11,7 @@ action:
     data_template:
       message: "Home Assistant is restarting. It was up for {{ states('sensor.home_assistant_uptime') }}."
 
-  - service: notify.ios_james_iphone
+  - service: notify.mobile_app_james_iphone
     data_template:
       message: "Home Assistant is restarting. It was up for {{ states('sensor.home_assistant_uptime') }}."
       data:
