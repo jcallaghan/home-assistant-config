@@ -7,6 +7,11 @@ trigger:
 
 action:
 
+  - service: input_datetime.set_datetime
+    entity_id: input_datetime.home_assistant_started
+    data_template:
+      datetime: "{{ now().strftime('%Y-%m-%d %H:%M:%S') }}"
+
   - service: notify.html5_notification
     data_template:
       message: "Home Assistant has started"
