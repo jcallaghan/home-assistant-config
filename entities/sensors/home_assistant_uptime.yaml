@@ -1,0 +1,23 @@
+platform: template
+sensors:
+
+  home_assistant_uptime:
+    friendly_name: 'Uptime'
+    entity_id: sensor.date_time
+    value_template: >
+      {% set totalminutes = (as_timestamp(now()) - as_timestamp(states('input_datetime.home_assistant_started'))) / 60 %}
+      {% set hours = (totalminutes / 60) | round(0,'floor') %}
+      {% set minutes = (totalminutes % 60) | round(0,'floor') %}
+      {% set days = (hours / 24) | round(0,'floor') %}
+      {% set weeks = (days / 7) | round(0,'floor') %}
+
+      {% if totalminutes <= 59 %}
+      00:00:{% if minutes <= 9 %}0{{ minutes }}{% else %}{{ minutes }}{% endif %}
+      {% elif totalminutes >= 60 and totalminutes <= 1400 %}
+      00:{% if hours <= 9 %}0{{ hours }}{% else %}{{ hours }}{% endif %}:{% if minutes <= 9 %}0{{ minutes }}{% else %}{{ minutes }}{% endif %}
+      {% elif totalminutes >= 1401 and totalminutes <= 9800 %}
+      {% if days <= 9 %}0{{ days }}{% else %}{{ days }}{% endif %}:{{ hours - (days * 24) | round(0,'floor') }}:{% if minutes <= 9 %}0{{ minutes }}{% else %}{{ minutes }}{% endif %}
+      {% endif %}
+    attribute_templates:
+      last_started: >-
+        {{ states('input_datetime.home_assistant_started') }}
