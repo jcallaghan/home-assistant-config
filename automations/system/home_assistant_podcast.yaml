@@ -1,0 +1,18 @@
+alias: System - Feedreader updates
+
+trigger:
+  platform: event
+  event_type: feedreader
+
+action:
+  - service: persistent_notification.create
+    data_template:
+      title: "New HA Podcast available {{ trigger.event.data.title }}"
+      message: "New Podcast available - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+      notification_id: "{{ trigger.event.data.title }}"
+
+# Todo
+# Use template to change the message to determine if it is a podcast episode 
+# as the feedreeeder integration also includes the Home Assistant blog and 
+# could include other feeds too. This could also apply to the trigger so it
+# only runs with certain feedreeder events.

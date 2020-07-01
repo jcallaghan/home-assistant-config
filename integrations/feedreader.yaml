@@ -1,0 +1,6 @@
+# https://www.home-assistant.io/integrations/feedreader/
+
+feedreader:
+  urls:
+    - https://www.home-assistant.io/atom.xml
+    - https://hasspodcast.io/feed/podcast
