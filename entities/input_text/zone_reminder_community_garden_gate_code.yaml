@@ -1,0 +1,5 @@
+community_garden_gate_code:
+  name: "Community Garden Gate Code"
+  icon: mdi:shovel
+  max: 255
+  mode: password
