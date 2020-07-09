@@ -1,0 +1,5 @@
+gym_code:
+  name: "Gym Code"
+  icon: mdi:dumbbell
+  max: 255
+  mode: password
