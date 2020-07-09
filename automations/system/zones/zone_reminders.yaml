@@ -1,0 +1,30 @@
+alias: System - Zone Reminders
+id: system_zone_reminders
+description: Sends a notification when entering a specific 
+trigger:
+
+  - platform: zone
+    entity_id:
+      - person.james
+    zone: zone.community_garden
+    event: enter
+
+  - platform: zone
+    entity_id:
+      - person.james
+    zone: zone.gym
+    event: enter
+
+action:
+
+  - service: notify.mobile_app_james_iphone
+    data_template:
+      title: "{{ trigger.zone.attributes.friendly_name }} zone reminder"
+      message: >-
+        {% if trigger.zone.attributes.friendly_name == "Community Garden" and states('input_text.community_garden_gate_code') != "" %}
+          The community garden gate code is {{ states('input_text.community_garden_gate_code') }}.
+        {% elif trigger.zone.attributes.friendly_name == "Gym" and  states('input_text.community_garden_gate_code') != "" %}
+          The gym code is {{ states('input_text.community_garden_gate_code') }}. Enjoy your workout!
+        {% endif %}
+
+# Related: #215
