@@ -1,0 +1,5 @@
+chore_nest_downstairs_batteries_last_changed:
+  name: Nest Downstairs Batteries Last Changed
+  has_date: true
+  has_time: false
+  icon: mdi:battery-charging-medium
