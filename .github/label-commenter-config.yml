@@ -38,7 +38,7 @@ labels:
   #     issue:
   #       body: This issue is easy for contributing. Everyone
   
-  - name: integration: utility_meter
+  - name: "integration: utility_meter"
     labeled:
       issue:
         body: |
