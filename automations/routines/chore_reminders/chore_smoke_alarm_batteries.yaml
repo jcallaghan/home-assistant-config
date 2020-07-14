@@ -1,0 +1,56 @@
+alias: Routine - Chore - Smoke Alarm Batteries
+id: chore_smoke_alarm_batteries
+description: ''
+
+trigger:
+
+  # Trigger when the template sensor is "on"
+  - platform: state
+    entity_id: binary_sensor.test_smoke_alarms
+
+  # Trigger once a day
+  - platform: time
+    at: "10:05:00"
+
+  # Trugger with motion in the hall
+  - platform: state
+    entity_id: binary_sensor.hall_motion
+    to: "on"
+
+condition:
+
+  condition: and
+  conditions:
+
+    # Only trigger during the day.
+    - condition: time
+      after: '10:00:00'
+      before: '21:00:00'
+
+    # Only trigger if the template sensor is "on".
+    - condition: state
+      entity_id: binary_sensor.hall_motion
+      state: "on"
+
+    # Throttle notifications (every 25 minutes).
+    - condition: template
+      value_template: "{{ (as_timestamp(states.sensor.date_time.last_changed) - (as_timestamp(state_attr('automation.routine_chore_smoke_alarm_batteries','last_triggered')))) > 32400 }}"
+
+    # I could add am I home but feel I still want a reminder.
+    # - condition: state
+    #   entity_id: person.james
+    #   state: "home"
+
+action:
+
+  - service: notify.mobile_app_james_iphone
+    data_template:
+      message: "Test smoke alarm and check their batteries."
+      data:
+        apns_headers:
+          apns-collapse-id: "smoke_alarm_test"
+
+# To do
+# Integrate with Google Home / Nest once have published their new API jcallaghan/home-assistant-config#225
+# I could create an input_boolean and use an automation to turn this on when the template binary_sensor is turned on.
+# Then these notifications/alerts could persist until the input_boolean is turned off through an actionable alert for example.
