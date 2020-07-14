@@ -35,6 +35,11 @@ labels:
     labeled:
       issue:
         body: "#HomeAssistant ```input_select``` integration documentation - https://www.home-assistant.io/integrations/input_select/"
+
+  - name: "integration: person"
+    labeled:
+      issue:
+        body: "#HomeAssistant ```person``` integration documentation - https://www.home-assistant.io/integrations/person/"
         
   - name: "integration: timer"
     labeled:
