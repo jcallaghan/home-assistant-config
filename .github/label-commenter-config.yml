@@ -6,6 +6,11 @@ labels:
       issue:
         body: "#HomeAssistant ```utility_meter``` integration documentation - https://www.home-assistant.io/integrations/utility_meter/"
 
+  - name: "integration: alert"
+    labeled:
+      issue:
+        body: "#HomeAssistant ```alert``` integration documentation - https://www.home-assistant.io/integrations/alert/"
+        
   - name: "integration: input_number"
     labeled:
       issue:
