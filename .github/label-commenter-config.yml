@@ -25,6 +25,11 @@ labels:
     labeled:
       issue:
         body: "#HomeAssistant ```input_boolean``` integration documentation - https://www.home-assistant.io/integrations/input_boolean/"
+
+  - name: "integration: binary_sensor"
+    labeled:
+      issue:
+        body: "#HomeAssistant ```binary_sensor``` integration documentation - https://www.home-assistant.io/integrations/binary_sensor/"
         
   - name: "integration: input_datetime"
     labeled:
