@@ -1,0 +1,22 @@
+platform: template
+sensors:
+
+  test_smoke_alarms:
+    friendly_name: 'Test Smoke Alarms'
+    value_template: "{{ as_timestamp(states('sensor.date')) == (state_attr('input_datetime.chore_nest_upstairs_batteries_last_changed','timestamp') + (60*60*24) * 90)
+                      or as_timestamp(states('sensor.date')) == (state_attr('input_datetime.chore_nest_upstairs_batteries_last_changed','timestamp') + (60*60*24) * 180)
+                      or as_timestamp(states('sensor.date')) == (state_attr('input_datetime.chore_nest_upstairs_batteries_last_changed','timestamp') + (60*60*24) * 270)
+                      or as_timestamp(states('sensor.date')) == (state_attr('input_datetime.chore_nest_upstairs_batteries_last_changed','timestamp') + (60*60*24) * 360)
+                      or as_timestamp(states('sensor.date')) == (state_attr('input_datetime.chore_nest_upstairs_batteries_last_changed','timestamp') + (60*60*24) * 450)
+                      or as_timestamp(states('sensor.date')) == (state_attr('input_datetime.chore_nest_upstairs_batteries_last_changed','timestamp') + (60*60*24) * 540)
+
+                      or as_timestamp(states('sensor.date')) == (state_attr('input_datetime.chore_nest_downstairs_batteries_last_changed','timestamp') + (60*60*24) * 90)
+                      or as_timestamp(states('sensor.date')) == (state_attr('input_datetime.chore_nest_downstairs_batteries_last_changed','timestamp') + (60*60*24) * 180)
+                      or as_timestamp(states('sensor.date')) == (state_attr('input_datetime.chore_nest_downstairs_batteries_last_changed','timestamp') + (60*60*24) * 270)
+                      or as_timestamp(states('sensor.date')) == (state_attr('input_datetime.chore_nest_downstairs_batteries_last_changed','timestamp') + (60*60*24) * 360)
+                      or as_timestamp(states('sensor.date')) == (state_attr('input_datetime.chore_nest_downstairs_batteries_last_changed','timestamp') + (60*60*24) * 450)
+                      or as_timestamp(states('sensor.date')) == (state_attr('input_datetime.chore_nest_downstairs_batteries_last_changed','timestamp') + (60*60*24) * 540)
+                    }}"
+
+# This binary_sensor should be true during the 90, 180, 270, 360, 450, 540 day since the batteries were last changed.
+# Related: jcallaghan/home-assistant-config#220
