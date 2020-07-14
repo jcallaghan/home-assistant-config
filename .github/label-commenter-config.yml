@@ -29,7 +29,7 @@ labels:
   - name: "integration: binary_sensor"
     labeled:
       issue:
-        body: "#HomeAssistant ```binary_sensor``` integration documentation - https://www.home-assistant.io/integrations/binary_sensor/"
+        body: "#HomeAssistant ```binary_sensor``` integration documentation - https://www.home-assistant.io/integrations/binary_sensor/ and https://www.home-assistant.io/integrations/binary_sensor.template/"
         
   - name: "integration: input_datetime"
     labeled:
