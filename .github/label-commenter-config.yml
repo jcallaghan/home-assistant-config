@@ -76,12 +76,12 @@ labels:
       issue:
         body: "#HomeAssistant ```lovelace cards``` documentation - https://www.home-assistant.io/lovelace/entity/"     
 
-  - name: "trend"
+  - name: "integration: trend"
     labeled:
       issue:
         body: "#HomeAssistant ```trend``` documentation - https://www.home-assistant.io/integrations/trend/"  
 
-  - name: "trend device-class"
+  - name: "integration: trend"
     labeled:
       issue:
         body: "#HomeAssistant ```binary_sensor``` ```device-class``` documentation - https://www.home-assistant.io/integrations/binary_sensor/#device-class"
