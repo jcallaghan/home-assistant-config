@@ -69,9 +69,19 @@ labels:
   - name: "lovelace: dashboards"
     labeled:
       issue:
-        body: "#HomeAssistant ```lovelace dashbaords``` documentation - https://www.home-assistant.io/lovelace/dashboards-and-views/"           
+        body: "#HomeAssistant ```lovelace dashboards``` documentation - https://www.home-assistant.io/lovelace/dashboards-and-views/"           
         
   - name: "lovelace: cards"
     labeled:
       issue:
         body: "#HomeAssistant ```lovelace cards``` documentation - https://www.home-assistant.io/lovelace/entity/"     
+
+  - name: "trend"
+    labeled:
+      issue:
+        body: "#HomeAssistant ```trend``` documentation - https://www.home-assistant.io/integrations/trend/"  
+
+  - name: "trend device-class"
+    labeled:
+      issue:
+        body: "#HomeAssistant ```binary_sensor``` ```device-class``` documentation - https://www.home-assistant.io/integrations/binary_sensor/#device-class"
