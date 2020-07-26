@@ -23,8 +23,8 @@ action:
       message: >-
         {% if trigger.zone.attributes.friendly_name == "Community Garden" and states('input_text.community_garden_gate_code') != "" %}
           The community garden gate code is {{ states('input_text.community_garden_gate_code') }}.
-        {% elif trigger.zone.attributes.friendly_name == "Gym" and  states('input_text.community_garden_gate_code') != "" %}
-          The gym code is {{ states('input_text.community_garden_gate_code') }}. Enjoy your workout!
+        {% elif trigger.zone.attributes.friendly_name == "Gym" and  states('input_text.gym_code') != "" %}
+          The gym code is {{ states('input_text.gym_code') }}. Enjoy your workout!
         {% endif %}
 
 # Related: #215
