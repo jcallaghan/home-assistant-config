@@ -6,11 +6,31 @@ labels:
       issue:
         body: "#HomeAssistant ```utility_meter``` integration documentation - https://www.home-assistant.io/integrations/utility_meter/"
 
-  - name: "integration: alert"
+  - name: "core: apple watch"
     labeled:
       issue:
-        body: "#HomeAssistant ```alert``` integration documentation - https://www.home-assistant.io/integrations/alert/"
+        body: "#HomeAssistant Mobile App ```Apple Watch``` documentation - https://companion.home-assistant.io/docs/apple-watch/apple-watch"
+
+  - name: "core: apple watch"
+    labeled:
+      issue:
+        body: "#HomeAssistant Mobile App ```Apple Watch Actions``` documentation - https://companion.home-assistant.io/docs/apple-watch/watch-actions/"
         
+  - name: "core: mobile app"
+    labeled:
+      issue:
+        body: "#HomeAssistant ```Mobile App``` documentation - https://companion.home-assistant.io/docs/core/core"
+        
+  - name: "notification"
+    labeled:
+      issue:
+        body: "#HomeAssistant Mobile App ```notification``` documentation - https://companion.home-assistant.io/docs/notifications/notifications-basic"
+
+  - name: "integration: camera"
+    labeled:
+      issue:
+        body: "#HomeAssistant ```camera``` integration documentation - https://www.home-assistant.io/integrations/camera/"   
+     
   - name: "integration: input_number"
     labeled:
       issue:
