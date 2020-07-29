@@ -6,6 +6,11 @@ labels:
       issue:
         body: "#HomeAssistant ```utility_meter``` integration documentation - https://www.home-assistant.io/integrations/utility_meter/"
 
+  - name: "integration: ring"
+    labeled:
+      issue:
+        body: "#HomeAssistant ```ring``` integration documentation - https://www.home-assistant.io/integrations/ring/"
+        
   - name: "core: apple watch"
     labeled:
       issue:
