@@ -1,0 +1,24 @@
+alias: 'Front Garden - Toggle floodlights with front door'
+id: 'fa9b233b-9931-47b3-9369-187e091eb53c'
+description: ''
+initial_state: true
+# mode: single
+
+trigger:
+
+  - platform: state
+    entity_id: binary_sensor.front_door_contact
+
+condition:
+
+  # Light is lower than the helper setting
+  - condition: template
+    value_template: "{{ states('sensor.front_door_outdoor_motion_lux') < states('input_number.house_outdoor_low_light_threshold') }}"
+
+action:
+
+  # Turn the light on or off based on the state of the door contact.
+  - service_template: light.turn_{{ trigger.to_state.state }}
+    entity_id: light.front_door_camera_light
+
+# Related jcallaghan/home-assistant-config/issues/235
