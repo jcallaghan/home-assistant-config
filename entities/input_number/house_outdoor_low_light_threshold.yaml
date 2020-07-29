@@ -1,0 +1,6 @@
+house_outdoor_low_light_threshold:
+  name: Outdoor LUX Threshold
+  min: 0
+  max: 400
+  step: 5
+  unit_of_measurement: 'lux'
