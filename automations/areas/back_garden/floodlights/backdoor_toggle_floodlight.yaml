@@ -1,0 +1,24 @@
+alias: 'Back Garden - Toggle floodlights with backdoor'
+id: '60c66876-0937-40d2-b290-1514e474eed8'
+description: ''
+initial_state: true
+# mode: single
+
+trigger:
+
+  - platform: state
+    entity_id: binary_sensor.backdoor_contact
+
+condition:
+
+  # Light is lower than the helper setting
+  - condition: template
+    value_template: "{{ states('sensor.backdoor_outdoor_motion_lux') < states('input_number.house_outdoor_low_light_threshold') }}"
+
+action:
+
+  # Turn the light on or off based on the state of the door contact.
+  - service_template: light.turn_{{ trigger.to_state.state }}
+    entity_id: light.backdoor_camera_light
+
+# Related jcallaghan/home-assistant-config/issues/235
