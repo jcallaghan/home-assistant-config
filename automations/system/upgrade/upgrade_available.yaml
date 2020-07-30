@@ -1,4 +1,4 @@
-alias: 'System - Upgrade available'
+alias: System - Upgrade available
 id: 'a3f210ad-0587-4ed2-a5cd-a912d38ad3ee'
 description: 'DevOps task to create new issue in GitHub when an update is available.'
 initial_state: true
@@ -56,7 +56,7 @@ action:
     data_template:
       current_version: "{{ states('sensor.version_current') }}"
       upgrade_version: "{{ states('sensor.version_latest') }}"
-      release_notes: "{{ states.updater.attributes.release_notes }}"
+      release_notes: "{{ state_attr('binary_sensor.updater','release_notes') }}"
 
 # Related
 # https://github.com/jcallaghan/home-assistant-config/issues/105
