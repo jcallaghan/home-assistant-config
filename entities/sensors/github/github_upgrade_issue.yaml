@@ -1,0 +1,18 @@
+platform: template
+sensors:
+
+  github_upgrade_issue:
+    friendly_name: 'GitHub Upgrade Issue'
+    value_template: >-
+      {% if state_attr('sensor.github_upgrade_issue_data','number') == '' %}0{% else %}{{ state_attr('sensor.github_upgrade_issue_data','number')}}{% endif %}
+    attribute_templates:
+      number: >-
+        {{ state_attr('sensor.github_upgrade_issue_data','number') }}
+      title: >-
+        {{ state_attr('sensor.github_upgrade_issue_data','titile') }}
+      state: >-
+        {{ state_attr('sensor.github_upgrade_issue_data','state') }}
+      created_at: >-
+        {{ state_attr('sensor.github_upgrade_issue_data','created_at') }}
+      url: >-
+        {{ state_attr('sensor.github_upgrade_issue_data','url') }}
