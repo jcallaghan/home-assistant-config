@@ -1,0 +1,19 @@
+platform: rest
+name: GitHub Upgrade Issue Data
+resource: https://api.github.com/repos/jcallaghan/home-assistant-config/issues
+authentication: basic
+headers:
+  Authorization: !secret github_token
+  Content-Type: application/json
+json_attributes_path: "$.[?(@.title=='Upgrade Home Assistant')]"
+json_attributes:
+  - number
+  - title
+  - state
+  - created_at
+  - url
+#value_template: "{% if value_json.number == '' %}0{% else %}{{ value_json.number }}{% endif %}"
+value_template: "OK"
+
+# //TODO get the value template to show the issue number if there is one otherwise 0 it out.
+# //TODO get the json search to look do a match on the tags and a wild card issue title.
