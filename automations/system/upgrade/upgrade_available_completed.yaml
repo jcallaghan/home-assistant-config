@@ -1,0 +1,56 @@
+alias: 'System - Upgrade completed'
+id: 'b8393df9-2d96-4190-996b-5e4e87542bd5'
+description: 'DevOps task to close issue in GitHub when an update is completed.'
+initial_state: true
+mode: single
+trigger:
+
+  # Trigger on start as this is required when upgrading.
+  - platform: homeassistant
+    event: start
+
+  # The version sensors might not be available when the start event called.
+  - platform: time_pattern
+    minutes: /15
+
+condition:
+
+  condition: and
+  conditions:
+
+    # Check there is an upgrade issue to close from my rest_command sensor.
+    - condition: template
+      value_template: "{{ states('sensor.github_upgrade_issue') | int > 0 }}"
+
+    # Check the current version matches the lastest version.
+    - condition: template
+      value_template: "{{ states('sensor.version_latest') == states('sensor.version_current') }}"
+
+action:
+
+  # Remove the upgrade available notification.
+  - service: persistent_notification.dismiss
+    data:
+      notification_id: home_assistant_upgrade
+
+  # Create a new notification to say an upgrade has been installed.
+  - service: persistent_notification.create
+    data_template:
+      title: "Home Assistant {{ states('sensor.version_current') }} installed"
+      message: >-
+        Home Assistant has been upgraded to {{ states('sensor.version_current') }}.
+      notification_id: home_assistant_upgrade
+
+  # Call my rest_command to comment on the issue.
+  - service: rest_command.github_issue_comment
+    data_template:
+      issue_number: "{{ states('sensor.github_upgrade_issue') }}"
+      comment: "Upgrade completed. \n \n This issue was closed by my Home Assistant DevOps automations."
+
+  # Call my rest_command to close the issue stored in my other rest_command sensor that looks for upgade issues.
+  - service: rest_command.github_close_issue
+    data_template:
+      issue_number: "{{ states('sensor.github_upgrade_issue') }}"
+
+# Related
+# https://github.com/jcallaghan/home-assistant-config/issues/105

@@ -1,0 +1,6 @@
+github_issue_comment:
+  url: "https://api.github.com/repos/jcallaghan/home-assistant-config/issues/{{ issue_number }}/comments"
+  method: POST
+  headers:
+    Authorization: !secret github_token
+  payload: "{'body':{{ comment }}}"

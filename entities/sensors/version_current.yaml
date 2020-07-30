@@ -1,0 +1,5 @@
+# https://www.home-assistant.io/components/sensor.version/
+
+platform: version
+name: Current Version
+source: local
