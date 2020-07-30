@@ -1,4 +1,4 @@
-alias: System - Upgrade available
+alias: 'System - Upgrade available'
 id: 'a3f210ad-0587-4ed2-a5cd-a912d38ad3ee'
 description: 'DevOps task to create new issue in GitHub when an update is available.'
 initial_state: true
