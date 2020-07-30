@@ -3,4 +3,4 @@ github_close_issue:
   method: POST
   headers:
     Authorization: !secret github_token
-  payload: "{'state':'closed'}"
+  payload: '{"state":"closed"}'
