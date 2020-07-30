@@ -3,4 +3,4 @@ github_issue_comment:
   method: POST
   headers:
     Authorization: !secret github_token
-  payload: '{"body":"{{ comment }"}}'
+  payload: '{"body":"{{ comment }}"}'
