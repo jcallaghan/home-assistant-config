@@ -58,8 +58,9 @@ action:
       upgrade_version: "{{ states('sensor.version_latest') }}"
       release_notes: "{{ states.updater.attributes.release_notes }}"
 
-# //TODO actionable alaert that kicks off Home Assistant stop, docker pull and Home Assistant start
-# //TODO Add HTML and iOS notification + throttling
-# //TODO when binary_sensor turns off, removes persistant notification, close task as this should then be stored in the rest sensor.
+# Related
+# https://github.com/jcallaghan/home-assistant-config/issues/105
+
+# //TODO actionable alert that kicks off Home Assistant stop, docker pull and Home Assistant start
 # //TODO include the version number in the title without breaking the upgrade issue rest sensor as the rest sensor does a match on the issue title.
 # //TODO decide if this should be for each minor release or stick to major releases.
