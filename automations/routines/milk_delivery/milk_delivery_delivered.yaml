@@ -1,0 +1,48 @@
+alias: 'Milk Delivered - Milk delivered notification'
+id: 'a560098b-e221-4864-b47b-ea5e8e2b73ed'
+description: 'Log when the milk was delivered.'
+initial_state: true
+mode: single
+
+trigger:
+
+  # Catch when the milk crate is knocked.
+  - platform: state
+    entity_id: binary_sensor.milk_bottle_vibration
+    to: 'on'
+
+  # Catch if the milk crate contact with the front door step changes.
+  - platform: state
+    entity_id: binary_sensor.milk_bottle_contact
+
+condition:
+  condition: and
+  conditions:
+
+    # Only trigger during the night.
+    - condition: time
+      after: '12:00:00'
+      before: '07:00:00'
+
+    # Only trigger on milk day.
+    - condition: state
+      entity_id: calendar.house_milkman
+      state: 'on'
+
+    # Only trigger if the milk crate has been placed on the doorstep.
+    - condition: state
+      entity_id: binary_sensor.milk_bottle_contact
+      state: 'off'
+
+    # Throttle notifications - useful if you are using notifications but as I am using the logbox I don't need to throttle this.
+    # Only run once over night (21,600 = 6 hours).
+    # - condition: template
+    #   value_template: "{{ (as_timestamp(states.sensor.date_time.last_changed) - (as_timestamp(state_attr('automation.milk_delivery_milk_delivered_notification','last_triggered')))) > 21600 }}"
+
+action:
+
+  # Record when the milk was delivered to the logbook.
+  - service: logbook.log
+    data_template:
+      name: 🥛 Milk delivery
+      message: "The milk was delivered at {{ states('sensor.time') }}."
