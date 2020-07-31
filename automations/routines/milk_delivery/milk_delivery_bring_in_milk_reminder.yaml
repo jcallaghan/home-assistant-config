@@ -1,0 +1,85 @@
+alias: 'Milk Delivery - Bring in the milk reminder notification'
+id: '79a1c840-ae59-4092-a81e-5cc754c14d33'
+description: 'Reminder to bring in the milk on milk days.'
+initial_state: true
+mode: single
+
+trigger:
+
+  # //TODO test and possible raise a bug that in a block like below the trigger is not correctly returned.
+  # For example hall motion is triggered, using {{ trigger.entity_id }} in a template in the action indicates landing triggered the automation not the hall.
+
+  # - platform: state
+  #   entity_id:
+  #     - alarm_control_panel.ring_mqtt_alarm
+  #     - binary_sensor.hall_motion
+  #     - binary_sensor.landing_motion
+
+  - platform: state
+    entity_id:
+      - alarm_control_panel.ring_mqtt_alarm
+    to: 'disarmed'
+
+  - platform: state
+    entity_id:
+      - binary_sensor.hall_motion
+    to: 'on'
+
+  - platform: state
+    entity_id:
+      - binary_sensor.landing_motion
+    to: 'on'
+
+condition:
+  condition: and
+  conditions:
+
+    # only trigger during the morning of milk day
+    - condition: time
+      after: '05:00:00'
+      before: '12:00:00'
+
+    # only trigger if the milk bottle holder is placed on the doorstep
+    - condition: state
+      entity_id: binary_sensor.milk_bottle_contact
+      state: 'off'
+
+    # only trigger on milk day
+    - condition: state
+      entity_id: calendar.house_milk_delivery
+      state: 'on'
+
+    # only trigger if the alarm is disarmed
+    - condition: state
+      entity_id: alarm_control_panel.ring_mqtt_alarm
+      state: 'disarmed'
+
+    # only send a notication once every 15 minutes
+    - condition: template
+      value_template: "{{ (as_timestamp(states.sensor.date_time.last_changed) - (as_timestamp(state_attr('automation.milk_delivery_bring_in_the_milk_reminder_notification','last_triggered')))) > 900 }}"
+
+action:
+
+  # Send a standard phone notification.
+  - service: notify.mobile_app_james_iphone
+    data_template:
+      title: 🥛 Milk delivery
+      message: "{{ trigger.entity_id }} You have not collected the fresh milk. It was delivered at {{ as_timestamp(state_attr('automation.milk_delivery_milk_delivered_notification','last_triggered')) | timestamp_custom('%H:%M') }}."
+      data:
+        apns_headers:
+          apns-collapse-id: "milk_delivered_bring_in_reminder"
+
+  # Check if the hall triggered the automation for TTS message.
+  - condition: template
+    value_template: "{{ trigger.entity_id == 'binary_sensor.hall_motion' }}"
+
+  # Drop a subtle TTS reminder to the hall Echo Dot.
+  - service: notify.alexa_media_hall_dot
+    data_template:
+      message: "Don't forget to bring the fresh milk in, it was delivered at {{ as_timestamp(state_attr('automation.milk_delivery_milk_delivered_notification','last_triggered')) | timestamp_custom('%H:%M') }}."
+      data:
+        type: 'tts'
+        method: 'all'
+
+  # //TODO consider changing the time in the TTS from time value to xx hours ago format.
+  # {{ ((as_timestamp(states.sensor.date_time.last_changed)) - as_timestamp(state_attr('automation.milk_delivery_milk_delivered_notification','last_triggered'))) }}
