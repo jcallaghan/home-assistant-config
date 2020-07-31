@@ -1,4 +1,4 @@
-alias: Utility - Washing machine idle so turn plug off
+alias: 'Utility - Washing machine idle so turn plug off'
 id: '78824a33-40e0-4863-a37d-5cfe0c6d8972'
 description: 'Turn off washing machine plug when idle'
 initial_state: true
