@@ -10,14 +10,17 @@ labels:
     labeled:
       issue:
         body: "### #HomeAssistant ```tado``` integration \n 
-        [Integration documentation](https://www.home-assistant.io/integrations/tado/) \n 
-        [Issues - Home Assistant](https://github.com/home-assistant/core/labels/integration%3A%20tado) \n
-        [Issues - My Repo](https://github.com/jcallaghan/home-assistant-config/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22integration%3A+tado%22)"
+        * [Integration documentation](https://www.home-assistant.io/integrations/tado/) \n 
+        * [Issues - Home Assistant](https://github.com/home-assistant/core/labels/integration%3A%20tado) \n
+        * [Issues - My Repo](https://github.com/jcallaghan/home-assistant-config/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22integration%3A+tado%22)"
         
   - name: "integration: ring"
     labeled:
       issue:
-        body: "#HomeAssistant ```ring``` integration documentation - https://www.home-assistant.io/integrations/ring/"
+        body: "### #HomeAssistant ```ring``` integration 
+        * [Integration documentation](https://www.home-assistant.io/integrations/ring/)
+        * [Issues - Home Assistant](https://github.com/home-assistant/core/labels/integration%3A%20ring) \n
+        * [Issues - My Repo](https://github.com/jcallaghan/home-assistant-config/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22integration%3A+ring%22)"
         
   - name: "core: apple watch"
     labeled:
