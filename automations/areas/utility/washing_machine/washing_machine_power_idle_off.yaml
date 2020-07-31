@@ -1,0 +1,52 @@
+alias: 'Utility - Washing machine idle so turn plug off'
+id: '78824a33-40e0-4863-a37d-5cfe0c6d8972'
+description: 'Turn off washing machine plug when idle'
+initial_state: true
+mode: single
+trigger:
+
+  # When the smart plug power falls below the running current helper.
+  - platform: template
+    value_template: "{{ states('sensor.washing_machine_amps') < states('input_number.washing_machine_running_current') }}"
+    for: "00:03:00"
+
+  # When the machine door finishes detecting tampering or the door closes.
+  - platform: state
+    entity_id:
+      - binary_sensor.washing_machine_door_contact
+      - binary_sensor.washing_machine_door_contact_tamper
+    to: "off"
+    for: "00:03:00"
+
+  # Run every 15 minutes to catch idle use.
+  - platform: time_pattern
+    minutes: "/15"
+
+condition:
+
+  condition: and
+  conditions:
+
+    # Smart plug power must be below the running current helper.
+    - condition: template
+      value_template: "{{ states('sensor.washing_machine_amps') < states('input_number.washing_machine_running_current') }}"
+
+    - condition: or
+      conditions:
+
+      # Washing machine status must be idle or clean.
+      - condition: state
+        entity_id: input_select.washing_machine_status
+        state: Idle
+
+      # Washing machine status must be idle or clean.
+      - condition: state
+        entity_id: input_select.washing_machine_status
+        state: Clean
+
+action:
+
+  # Turn of the washing machine smart plug.
+  - service: switch.turn_off
+    data:
+      entity_id: switch.washing_machine
