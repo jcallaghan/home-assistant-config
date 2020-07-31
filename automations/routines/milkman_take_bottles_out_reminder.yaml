@@ -1,40 +1,69 @@
-alias: Milkman - Take bottles out the bottles notification
+alias: Milk Delivery - Take bottles out the bottles notification
+id: '6088a931-5a20-4f44-aa7b-8739d8ba213c'
+description: 'Reminder to take the milk bottles and crate out the night before milk day.'
+initial_state: true
+mode: single
 
 trigger:
 
-  # Trigger at 19:00 the night before milk day
+  # Trigger at 19:00 the night before milk day.
   - platform: template
-    value_template: "{{ as_timestamp(now()) > (as_timestamp(state_attr('calendar.house_milkman','start_time')) - 18000) }}"
+    value_template: "{{ as_timestamp(now()) > (as_timestamp(state_attr('calendar.house_milk_delivery','start_time')) - 18000) }}"
 
-  # Trigger every 20 minutes
+  # Trigger every 20 minutes.
   - platform: time_pattern
     minutes: "/20"
 
+  # When there is hall motion so TTS can be triggered.
+  - platform: state
+    entity_id:
+      - binary_sensor.hall_motion
+    to: 'on'
+
+  # //TODO consider adding kitchen motion to trigger a TTS message in the kitchen too.
+
 condition:
+
   condition: and
   conditions:
 
-    # only trigger the day before milk day
+    # Only trigger the day before milk day.
     - condition: template
-      value_template: "{{ as_timestamp(now()) > (as_timestamp(state_attr('calendar.house_milkman','start_time')) - 86400) }}"
+      value_template: "{{ as_timestamp(now()) > (as_timestamp(state_attr('calendar.house_milk_delivery','start_time')) - 86400) and as_timestamp(now()) < (as_timestamp(state_attr('calendar.house_milk_delivery','start_time'))) }}"
 
-    # only trigger the night before milk day
+    # Only trigger the night before milk day.
     - condition: time
       after: '17:59:59'
-      before: '12:00:00'
+      before: '23:59:59'
 
-    # only trigger if the milk bottle holder has not been placed on the doorstep
+    # Only trigger if the milk bottle holder has not been placed on the doorstep.
     - condition: state
       entity_id: binary_sensor.milk_bottle_contact
       state: 'on'
 
-    # only send a notication once every 30 minutes
+    # Only send a notication once every 30 minutes.
     - condition: template
-      value_template: "{{ (as_timestamp(states.sensor.date_time.last_changed) - (as_timestamp(state_attr('automation.milkman_take_bottles_out_the_bottles_notification','last_triggered')))) > 1800 }}"
+      value_template: "{{ (as_timestamp(states.sensor.date_time.last_changed) - (as_timestamp(state_attr('automation.milk_delivery_take_bottles_out_the_bottles_notification','last_triggered')))) > 1800 }}"
 
 action:
 
-  - service: notify.ios_james_iphone
+  # Send a standard phone notification.
+  - service: notify.mobile_app_james_iphone
     data_template:
-      title: 🥛 Milkman
+      title: 🥛 Milk delivery
       message: "The milk crate needs to be taken outside."
+      data:
+        apns_headers:
+          apns-collapse-id: "milk_delivery_take_out_reminder"
+
+  # Check if the hall triggered the automation for TTS message.
+  - condition: template
+    value_template: "{{ trigger.entity_id == 'binary_sensor.hall_motion' }}"
+
+  # Drop a subtle TTS reminder to the hall Echo Dot.
+  - service: notify.alexa_media_hall_dot
+    data_template:
+      message: "It's milk day tomorrow, don't forget to take out the milk."
+      data:
+        type: 'tts'
+        method: 'all'
