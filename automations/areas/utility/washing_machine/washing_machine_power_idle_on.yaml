@@ -1,0 +1,31 @@
+alias: 'Utility - Washing machine no longer idle so turn plug on'
+description: 'Turn on washing machine plug as no longer idle.'
+initial_state: true
+mode: single
+
+trigger:
+
+  # Trigger when ever the door contact is tampered with or is opened or closed.
+  - platform: state
+    entity_id:
+      - binary_sensor.washing_machine_door_contact
+      - binary_sensor.washing_machine_door_contact_tamper
+
+condition:
+
+  condition: or
+  conditions:
+
+    # Washing machine must be idle.
+    - condition: state
+      entity_id: input_select.washing_machine_status
+      state: Idle
+
+action:
+
+  # Turn off washing machine smart plug.
+  - service: switch.turn_on
+    data:
+      entity_id: switch.washing_machine
+
+# //TODO Find out if you can use a template for the above and below trigger values.
