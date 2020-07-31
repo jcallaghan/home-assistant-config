@@ -67,7 +67,7 @@ action:
       message: "{{ trigger.entity_id }} You have not collected the fresh milk. It was delivered at {{ as_timestamp(state_attr('automation.milk_delivery_milk_delivered_notification','last_triggered')) | timestamp_custom('%H:%M') }}."
       data:
         apns_headers:
-          apns-collapse-id: "milk_delivered_bring_in_reminder"
+          apns-collapse-id: "milk_delivery_bring_in_reminder"
 
   # Check if the hall triggered the automation for TTS message.
   - condition: template
