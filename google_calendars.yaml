@@ -9,9 +9,9 @@
     search: '* Bin'
     max_results: 20
     
-  - device_id: house_milkman
+  - device_id: house_milk_delivery
     ignore_availability: true
-    name: Milkman
+    name: Milk delivery
     track: true
-    search: '*milkman*'
+    search: '*milk delivery*'
     max_results: 20
