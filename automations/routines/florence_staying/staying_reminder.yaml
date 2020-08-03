@@ -1,0 +1,58 @@
+alias: 'Florence - Is Florence staying notification'
+id: 'f232285b-1e36-466f-aa00-1f79fb2e2c1f'
+description: 'Send an actionable notification when it look likes Florence might be staying over.'
+initial_state: true
+mode: 'single'
+
+trigger:
+
+  # My calendar is always up-to-date with whether Florence is staying or not.
+  - platform: state
+    entity_id: calendar.florence_staying
+    to: 'on'
+
+  # Florence's iPad being online is a good signal for ad-hoc stays and occasions when my calendar is not up-to-date.
+  - platform: state
+    entity_id: person.florence
+
+  # Removed as this was for ad-hoc occasions but now I'm using zone based triggers this is not needed.
+  # Daily trigger assuming conditions are met for ad-hoc trips.
+  # - platform: time
+  #   at: '14:30:00'
+
+  # //TODO could consider a template trigger for when Florence staying is off and motion is detected in her room.
+
+condition:
+
+  condition: and
+  conditions:
+
+    # Florence staying helper not on.
+    - condition: state
+      entity_id: input_boolean.house_florence_in_residence
+      state: 'off'
+
+    # Removed as ad-hoc visits this would not alway be in my calendar.
+    # - condition: state
+    #   entity_id: calendar.florence_staying
+    #   state: 'on'
+
+    # Avoids a notification being sent at midnight when the calendar.florence_staying turns on.
+    - condition: time
+      after: '10:00:00'
+      before: '22:00:00'
+
+    # Only send a notication once every 8 hours, with the above time condition this will result in possibly 2 notifications.
+    - condition: template
+      value_template: "{{ (as_timestamp(states.sensor.date_time.last_changed) - (as_timestamp(state_attr('automation.is_florence_staying_notification','last_triggered')))) > 28800 }}"
+
+action:
+
+  # Send push notification to my iPhone.
+  - service: notify.mobile_app_james_iphone
+    data_template:
+      title: 'Florence'
+      message: 'Is Florence staying over tonight?'
+      data:
+        push:
+          category: 'florence_staying'
