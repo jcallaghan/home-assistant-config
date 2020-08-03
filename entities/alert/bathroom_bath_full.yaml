@@ -1,0 +1,22 @@
+bath_full:
+  name: 'Bath water is full'
+  entity_id: binary_sensor.bath_water_sensor
+  state: 'on'
+  repeat:
+    - 1
+    - 4
+  can_acknowledge: true
+  skip_first: false
+  title: '⚠️Bath'
+  message: 'The bath water is full and needs to be turned off.'
+  done_message: 'The bath water is no longer a problem.'
+  notifiers:
+    - alert_bath_full
+  data:
+    apns_headers:
+      apns-collapse-id: 'alert_acknowledgement'
+    push:
+      category: 'alert_acknowledgement'
+      sound: 'Alert_WalkieTalkie_Haptic.caf'
+    action_data:
+      entity_id: alert.bath_full
