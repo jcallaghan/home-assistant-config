@@ -1,0 +1,27 @@
+alias: 'Is Florence staying notification action'
+id: 'cb9ac7c0-3704-4638-85f9-1b873fe15b1d'
+description: 'Toggle a helper to indicate if Florence is staying or not.'
+initial_state: true
+mode: 'single'
+
+trigger:
+
+  # Trigger when yes or no is pressed on the actionable alert.
+  - platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: FLORENCE_STAYING_YES
+
+  # Trigger when yes or no is pressed on the actionable alert.
+  - platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: FLORENCE_STAYING_NO
+
+condition: []
+
+action:
+
+  # Toggle Florence staying input_boolean based on actionable alart.
+  - service_template: "{{ 'input_boolean.turn_' + trigger.event.data.actionName | replace('FLORENCE_STAYING_YES', 'on') | replace('FLORENCE_STAYING_NO', 'off') }}"
+    entity_id: input_boolean.house_florence_in_residence
