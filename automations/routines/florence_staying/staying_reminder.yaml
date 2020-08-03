@@ -11,9 +11,14 @@ trigger:
     entity_id: calendar.florence_staying
     to: 'on'
 
-  # Florence's iPad being online is a good signal for ad-hoc stays and occasions when my calendar is not up-to-date.
+  # Florence arriving home i.e. her iPad is turned on.
   - platform: state
     entity_id: person.florence
+
+  # Florence's iPad being online is a good signal for ad-hoc stays and occasions when my calendar is not up-to-date.
+  # - platform: state
+  #   entity_id: device_tracker.mobile_florence_ipad
+  #   to: home
 
   # Removed as this was for ad-hoc occasions but now I'm using zone based triggers this is not needed.
   # Daily trigger assuming conditions are met for ad-hoc trips.
