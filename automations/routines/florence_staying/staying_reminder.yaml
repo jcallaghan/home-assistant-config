@@ -61,3 +61,4 @@ action:
       data:
         push:
           category: 'florence_staying'
+          sound: 'News_Flash.caf' # Fanfare.caf
