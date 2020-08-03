@@ -8,7 +8,7 @@
     can_acknowledge: true
     skip_first: true
     title: '⚠️Freezer Door'
-    message: 'The freezer door has been left open for {{ (as_timestamp(now()) - as_timestamp(states.binary_sensor.fridge_door_contact.last_updated)) | int //60 }} minutes.'
+    message: 'The freezer door has been left open for {{ (as_timestamp(now()) - as_timestamp(states.binary_sensor.freezer_door_contact.last_updated)) | int //60 }} minutes.'
     done_message: 'The freezer door has been closed.'
     notifiers:
       - alert_kitchen
