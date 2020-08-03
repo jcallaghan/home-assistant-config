@@ -53,3 +53,15 @@ ios:
             authenticationRequired: true
             destructive: false
             activationMode: 'background'
+
+      # Relates to #257
+      - name: Alert
+        identifier: 'alert_acknowledgement'
+        actions:
+
+          - identifier: 'alert_acknowledgement_disable'
+            title: 'Disable alert'
+            authenticationRequired: false
+            destructive: true
+            behavior: 'default'
+            activationMode: 'background'
