@@ -1,0 +1,22 @@
+  kitchen_freezer_door:
+    name: 'Freezer door left open'
+    entity_id: binary_sensor.alert_kitchen_freezer_door
+    state: 'on'
+    repeat:
+      - 2
+      - 5
+    can_acknowledge: true
+    skip_first: true
+    title: '⚠️Freezer Door'
+    message: 'The freezer door has been left open for {{ (as_timestamp(now()) - as_timestamp(states.binary_sensor.fridge_door_contact.last_updated)) | int //60 }} minutes.'
+    done_message: 'The freezer door has been closed.'
+    notifiers:
+      - alert_kitchen
+    data:
+      apns_headers:
+        apns-collapse-id: 'alert_acknowledgement'
+      push:
+        category: 'alert_acknowledgement'
+        sound: 'Alert_WalkieTalkie_Haptic.caf'
+      action_data:
+        entity_id: alert.kitchen_freezer_door

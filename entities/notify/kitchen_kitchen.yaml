@@ -1,0 +1,15 @@
+platform: group
+name: alert_kitchen
+services:
+
+  - service: mobile_app_james_iphone
+    data_template:
+
+  - service: html5_notification
+
+  - service: alexa_media
+    data:
+      target: ["media_player.alexa_kitchen","media_player.alexa_james_desk","media_player.alexa_hall_dot"]
+      data:
+        type: 'announce'
+        method: 'all'
