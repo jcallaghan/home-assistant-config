@@ -1,0 +1,86 @@
+alias: 'Florence - Pick-up and drop-off staying reminder'
+id: '9ab804d3-5856-4303-a63b-9b66a1aeaebe'
+description: 'Check if Florence is staying (actionable alert) when entering zones related to Florence.'
+initial_state: true
+mode: 'single'
+
+trigger:
+
+  - platform: zone
+    entity_id:
+      - person.james
+    zone: zone.florence_home
+    event: enter
+
+  - platform: zone
+    entity_id:
+      - person.james
+    zone: zone.florence_school
+    event: enter
+
+  - platform: zone
+    entity_id:
+      - person.james
+    zone: zone.florence_tennis
+    event: enter
+
+  - platform: zone
+    entity_id:
+      - person.james
+    zone: zone.florence_swimming
+    event: enter
+
+  - platform: zone
+    entity_id:
+      - person.james
+    zone: zone.florence_horse_riding
+    event: enter
+
+  - platform: zone
+    entity_id:
+      - person.james
+    zone: !secret florence_zone_dl1 # I use a secret because the UI does not allow me mask the zone name using an ID.
+    event: enter
+
+  - platform: zone
+    entity_id:
+      - person.james
+    zone: !secret florence_zone_dl2 # I use a secret because the UI does not allow me mask the zone name using an ID.
+    event: enter
+
+condition: []
+
+action:
+
+  # Increment the appropriate counter i.e. Home, School or Misc for pick-up and drop-off insights.
+  # Zones are created via the UI and named consistently 'Florence Zone Name'.
+  - service: counter.increment
+    data_template:
+      entity_id: >-
+        {% set triggerzone = trigger.zone.attributes.friendly_name | replace("Florence ","") | lower %}
+        {% if triggerzone == "home" or triggerzone == "school" %}
+          {% set zone = triggerzone %}
+        {% else %}
+          {% set zone = "misc" %}
+        {% endif %}
+
+        {% if is_state('input_boolean.house_florence_in_residence','on') %}
+          {{ "counter.florence_" + zone + "_drop_off" }}
+        {% else %}
+          {{ "counter.florence_" + zone + "_pick_up" }}
+        {% endif %}
+
+  # Send florence_staying actionable alert.
+  - service: notify.mobile_app_james_iphone
+    data_template:
+      title: 'Florence'
+      message: >-
+        {% if is_state('input_boolean.house_florence_in_residence','on') %}
+          Look's like you've dropped Florence off at {{ trigger.zone.attributes.friendly_name | replace("Florence ","") | replace("Home","her mothers") | lower }}. Is she staying over tonight?
+        {% else %}
+          Look's like you're picking up Florence from {{ trigger.zone.attributes.friendly_name | replace("Florence ","") | replace("Home","her mothers") | lower }}. Is she staying over tonight?
+        {% endif %}
+      data:
+        push:
+          category: 'florence_staying'
+          sound: 'News_Flash.caf' # Fanfare.caf
