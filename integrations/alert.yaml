@@ -1,0 +1,3 @@
+# https://www.home-assistant.io/integrations/alert
+
+alert: !include_dir_merge_named ../entities/alerts

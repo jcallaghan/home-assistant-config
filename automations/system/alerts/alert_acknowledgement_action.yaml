@@ -1,0 +1,34 @@
+alias: 'System - Alert acknowledgement action'
+id: 'dfaca9d5-fc80-4455-b54d-0b363b721aaa'
+description: 'Disables alert via actionable alert.'
+initial_state: true
+mode: 'single'
+
+trigger:
+
+  # Trigger on actionable alert event.
+  - platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: ALERT_ACKNOWLEDGEMENT_DISABLE
+
+condition: []
+
+  # - condition: template
+  #   value_template: "{{ trigger.event.data.action_data.entity_id <> '' }}"
+
+action:
+
+  # Disable the alert.
+  - service: alert.turn_off
+    data_template:
+      entity_id: "{{ trigger.event.data.action_data.entity_id }}"
+
+  # Acknowledge the alert has been disabled.
+  - service: notify.mobile_app_james_iphone
+    data_template:
+      title: '🆘 Alert disabled'
+      message: "Alert '{{ trigger.event.data.action_data.entity_id }}' has been disabled."
+      data:
+        apns_headers:
+          apns-collapse-id: "alert_acknowledgement"
