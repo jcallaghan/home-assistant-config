@@ -6,6 +6,25 @@ ios:
   push:
     categories: 
 
+      # Relates to #171
+      - name: Florence Staying
+        identifier: 'florence_staying'
+        actions:
+
+          - identifier: 'florence_staying_yes'
+            title: 'Yes'
+            authenticationRequired: false
+            destructive: true
+            behavior: 'default'
+            activationMode: 'background'
+
+          - identifier: 'florence_staying_no'
+            title: 'No'
+            authenticationRequired: false
+            destructive: false
+            activationMode: 'background'
+            
+      # Relates to #78 and #77
       - name: Volvo Actions
         identifier: 'volvo_actions'
         actions:
