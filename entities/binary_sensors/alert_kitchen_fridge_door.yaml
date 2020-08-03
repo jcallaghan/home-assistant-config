@@ -1,0 +1,9 @@
+platform: template
+sensors:
+
+  alert_kitchen_fridge_door:
+    friendly_name: 'Fridge door open and no motion'
+    value_template: >-
+      {{  is_state('binary_sensor.fridge_door_contact','on')
+          and is_state('binary_sensor.kitchen_motion','off') }}
+    device_class: problem
