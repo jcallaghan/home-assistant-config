@@ -2,8 +2,9 @@ platform: template
 sensors:
 
   alert_kitchen_fridge_door:
-    friendly_name: 'Fridge door open and no motion'
+    friendly_name: 'Fridge door open'
     value_template: >-
-      {{  is_state('binary_sensor.fridge_door_contact','on')
-          and is_state('binary_sensor.kitchen_motion','off') }}
+      {{  is_state('binary_sensor.fridge_door_contact','on') }}
     device_class: problem
+
+# //TODO consider how to combine this with is_state('binary_sensor.kitchen_motion','off') without motion on disabling the alert.
