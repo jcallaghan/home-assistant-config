@@ -1,0 +1,8 @@
+platform: waze_travel_time
+name: James to Home
+origin: person.james
+destination: !secret waze_home
+realtime: true
+region: 'EU'
+units: imperial
+vehicle_type: car

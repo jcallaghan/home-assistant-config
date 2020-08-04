@@ -1,0 +1,9 @@
+platform: waze_travel_time
+name: James to Florence calendar event location (preferred route)
+origin: person.james
+destination: sensor.calendar_florence_event_location
+incl_filter: !secret waze_florence_travel_via
+realtime: true
+region: 'EU'
+units: imperial
+vehicle_type: car

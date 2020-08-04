@@ -6,6 +6,14 @@ labels:
       issue:
         body: "#HomeAssistant ```utility_meter``` integration documentation - https://www.home-assistant.io/integrations/utility_meter/"
 
+  - name: "integration: waze"
+    labeled:
+      issue:
+        body: "### #HomeAssistant ```waze_trave_time``` integration \n 
+        * [Integration documentation](https://www.home-assistant.io/integrations/waze_travel_time/) \n 
+        * [Issues - Home Assistant](https://github.com/home-assistant/core/labels/integration%3A%20waze_travel_time) \n
+        * [Issues - My Repo](https://github.com/jcallaghan/home-assistant-config/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22integration%3A+waze%22)"
+
   - name: "integration: tado"
     labeled:
       issue:
@@ -13,7 +21,8 @@ labels:
         * [Integration documentation](https://www.home-assistant.io/integrations/tado/) \n 
         * [Issues - Home Assistant](https://github.com/home-assistant/core/labels/integration%3A%20tado) \n
         * [Issues - My Repo](https://github.com/jcallaghan/home-assistant-config/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22integration%3A+tado%22)"
-        
+
+https://www.home-assistant.io/integrations/waze_travel_time
   - name: "integration: ring"
     labeled:
       issue:

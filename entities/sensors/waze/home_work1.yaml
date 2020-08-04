@@ -1,0 +1,6 @@
+platform: waze_travel_time
+name: !secret waze_home_to_work1_name
+origin: !secret waze_home
+destination: !secret waze_work1
+region: 'EU'
+units: imperial
