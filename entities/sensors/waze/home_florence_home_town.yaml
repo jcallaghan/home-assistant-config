@@ -1,0 +1,6 @@
+platform: waze_travel_time
+name: !secret waze_home_to_florence_town_name
+origin: !secret waze_home
+destination: !secret waze_florence_home_town
+region: 'EU'
+units: imperial
