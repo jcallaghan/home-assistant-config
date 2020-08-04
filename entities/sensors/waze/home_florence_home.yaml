@@ -1,5 +1,5 @@
 platform: waze_travel_time
-name: !secret waze_home_to_florence_home
+name: !secret waze_home_to_florence_home_name
 origin: !secret waze_home
 destination: !secret waze_florence_home
 region: 'EU'
