@@ -1,0 +1,8 @@
+platform: waze_travel_time
+name: James to next calendar event location
+origin: person.james
+destination: sensor.calendar_next_event_location
+realtime: true
+region: 'EU'
+units: imperial
+vehicle_type: car
