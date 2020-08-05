@@ -1,0 +1,66 @@
+alias: 'Routine - Hourly Chime'
+id: '632d038e-1e9d-4b8a-938b-54ccc472db61'
+description: 'Hourly chime and time announcement'
+initial_state: true
+mode: 'single'
+
+trigger:
+
+  # On the hour.
+  - platform: time_pattern
+    minutes: '0'
+
+  # On the half hour.
+  - platform: time_pattern
+    minutes: '30'
+
+condition:
+
+  # Only announce between these hours.
+  # Days can also be specified via weekday https://www.home-assistant.io/docs/scripts/conditions/#time-condition.
+  - condition: time
+    after: '08:00:00'
+    before: '23:00:00'
+
+  # Workday might also be useful via https://www.home-assistant.io/integrations/workday.
+  # - condition: state
+  #   entity_id: binary_sensor.workday
+  #   state: 'on'
+
+  # Alarm must be disarmed.
+  - condition: state
+    entity_id: input_select.house_mode
+    state: 'Day Mode'
+
+  # Quiet mode must be disabled.
+  - condition: state
+    entity_id: input_boolean.house_snooze_do_not_disturb
+    state: 'off'
+
+action:
+
+  # Play chime on Echo devices.
+  - service: media_player.play_media
+    data:
+      entity_id:
+        - media_player.alexa_kitchen
+        - media_player.alexa_james_desk
+        - media_player.alexa_hall_dot
+      media_content_type: sound
+      media_content_id: 'bell_02'
+
+  # Sounds available via https://developer.amazon.com/en-US/docs/alexa/custom-skills/ask-soundlibrary.html.
+  # I liked these however they don't seem to play on my devices.
+  # <audio src="soundbank://soundlibrary/musical/amzn_sfx_electronic_beep_01"/>
+  # <audio src="soundbank://soundlibrary/alarms/beeps_and_bloops/bell_01"/>
+  # <audio src="soundbank://soundlibrary/animals/amzn_sfx_bird_robin_chirp_1x_01"/>
+  # <audio src="soundbank://soundlibrary/office/amzn_sfx_elevator_open_bell_01"/>
+
+  # Announce time on multiple Echo devices.
+  - service: alexa_media
+    data_template:
+      target: ["media_player.alexa_kitchen","media_player.alexa_james_desk","media_player.alexa_hall_dot"]
+      message: "{{ as_timestamp(now()) | timestamp_custom('%H:%M', True) }}"
+      data:
+        type: 'tts'
+        method: 'all'
