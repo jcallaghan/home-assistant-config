@@ -1,0 +1,50 @@
+alias: 'House - Warmer temperature outside notification'
+id: '7c7e6e5a-7c07-44e0-928c-25e0900efd68'
+description: 'The temperature is warmer outside reminder to close doors and windows notification.'
+initial_state: true
+mode: single
+
+trigger:
+
+  # When it is warmer ouside.
+  - platform: state
+    entity_id: sensor.weather_station_warmer_or_cooler_outside
+    to: 'Warmer outside'
+
+condition:
+
+  # Doors and windows are open.
+  - condition: state
+    entity_id:
+      - group.doors_external
+      - groups.windows_all
+    state: 'on'
+
+  # Alarm must be disarmed.
+  - condition: state
+    entity_id: input_select.house_mode
+    state: 'Day Mode'
+
+  # Quiet mode must be disabled.
+  - condition: state
+    entity_id: input_boolean.house_snooze_do_not_disturb
+    state: 'off'
+
+action:
+
+  # Send push notification to my iPhone.
+  - service: notify.mobile_app_james_iphone
+    data_template:
+      title: 'Warm outside'
+      message: "It is warmer outside ({{ states('sensor.temperature_outside_back_garden') }}°C) than it is inside ({{ states('sensor.temperature_inside') }}°C). You should consider closing the doors and windows to prevent the heat from coming in."
+      data:
+        push:
+          category: 'temperature_warmer_outside'
+
+  # Throttle message at least 12 hours.
+  - delay: '12:00:00'
+
+# //TODO replace phone notification with TSS?
+
+# //RELATED
+# https://github.com/jcallaghan/home-assistant-config/issues/266
