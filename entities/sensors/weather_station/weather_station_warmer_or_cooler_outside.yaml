@@ -1,0 +1,19 @@
+platform: template
+sensors:
+  weather_station_warmer_or_cooler_outside:
+    friendly_name: 'Warmer or cooler outside'
+    value_template: >
+      {%- if states('sensor.temperature_outside_back_garden') < states('sensor.temperature_inside') -%}
+        Cooler outside
+      {%- else -%}
+        Warmer outside
+      {%- endif %}
+    icon_template: >
+      mdi:home-thermometer
+    attribute_templates:
+      temperature_inside: >
+        {{ states('sensor.temperature_inside') }}
+      temperature_outside: >
+        {{ states('sensor.temperature_outside_back_garden') }}
+      temperature_difference: >
+        {{ (states('sensor.temperature_outside_back_garden') | float - states('sensor.temperature_inside') | float) | round(2) }}
