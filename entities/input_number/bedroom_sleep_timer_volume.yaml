@@ -1,0 +1,7 @@
+bedroom_sleep_timer_volume:
+  name: Volume
+  min: 0
+  max: 100
+  step: 1
+  unit_of_measurement: '%'
+  icon: mdi:volume-high
