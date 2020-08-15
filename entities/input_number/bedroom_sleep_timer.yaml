@@ -1,0 +1,8 @@
+bedroom_sleep_timer:
+  name: Sleep Timer
+  min: 15
+  max: 180
+  step: 15
+  initial: 60
+  unit_of_measurement: 'mins'
+  icon: mdi:timer-outline
