@@ -1,0 +1,14 @@
+bedroom_sonos_source:
+  name: Sonos Source
+  options:
+    - 'Absolute Radio'
+    - 'BBC Radio Manchester'
+    - 'Capital Manchester'
+    - 'Classic FM'
+    - 'Heart'
+    - 'Kisstory'
+    - 'LBC'
+    - 'LBC News'
+    - 'Magic Radio'
+    - 'Smooth Radio UK'
+  icon: mdi:star-box
