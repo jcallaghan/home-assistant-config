@@ -1,0 +1,50 @@
+alias: 'Bedroom - Sonos Sleep Timer'
+id: 'e238b5c5-47e8-439e-881e-47e87367c9a8'
+description: 'Set sleep timer on the bedroom Sonos.'
+initial_state: true
+mode: single
+
+trigger:
+
+  - platform: device
+    domain: zha
+    device_id: c506a4cec1354ca5b9a38eb14b06d147 # Bedroom Aqara button
+    type: remote_button_short_press
+    subtype: remote_button_short_press
+
+condition: []
+
+action:
+
+  # Play selected music source.
+  - service: media_player.select_source
+    data_template:
+      entity_id: media_player.sonos_bedroom
+      source: "{{ states('input_select.bedroom_sonos_source') }}"
+
+  # Pause all other players.
+  # //TODO pause Florence Echo Dot as well?
+  - service: media_player.media_pause
+    data:
+      entity_id:
+        - media_player.sonos_bathroom
+
+  # Set volume.
+  - service: media_player.volume_set
+    data_template:
+      entity_id: media_player.sonos_bedroom
+      volume_level: "{{ states('input_number.bedroom_sleep_timer_volume') | int / 100 }}"
+
+  # Play selected source after the volume has been changed.
+  - service: media_player.media_play
+    data:
+      entity_id: media_player.sonos_bedroom
+
+  # Play for specified duration (take minutes from helper and multiply to get seconds)
+  - service: sonos.set_sleep_timer
+    data_template:
+      entity_id: media_player.sonos_bedroom
+      sleep_time: "{{ states('input_number.bedroom_sleep_timer') | int * 60 }}"
+
+# Related:
+# https://github.com/jcallaghan/home-assistant-config/issues/264
