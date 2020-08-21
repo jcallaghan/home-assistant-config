@@ -1,0 +1,8 @@
+logging_level:
+  name: 'Logging Level'
+  options:
+    - 'error'
+    - 'warning'
+    - 'info'
+    - 'debug'
+  icon: mdi:math-log

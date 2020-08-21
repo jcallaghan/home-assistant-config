@@ -1,0 +1,20 @@
+alias: 'System - Set logging level'
+id: '83f69a47-b3bd-4179-b524-22a80394cd9c'
+description: 'Set logging level via the UI.'
+initial_state: true
+mode: 'single'
+
+trigger:
+
+  # When logging level is changed in the UI.
+  - platform: state
+    entity_id: input_select.logging_level
+
+condition: []
+
+action:
+
+  # Update the logger to use the level selected.
+  - service: logger.set_default_level
+    data_template:
+      level: "{{ trigger.to_state.state }}"
