@@ -25,17 +25,26 @@
 
 # Home Assistant Configuration
 
+## 2022 Update!
+
+Folks, I'm still here! Sadly family, work and moving/renovating has eaten in to my time and prevented me from giving this repo the time is deserves. Plenty of you keep coming back, thank you! For now I will continue to update and reply to my issues and hope to provide more information about my Smart Home very soon!
+
 ## The Retreat
+
 This is my happy little place in Manchester in the UK. I've transformed this three bedroom house into the most incredible Smart Home that not only works for me but my family and friends too. 
 
 ### Where is your code?
-It's coming. I've been running Home Assistant for almost a year now and I've done a ton of great stuff with it. Right now my config is tucked away in another private repo but I am gradually moving it over to this repo where I am attempting to document all my work through issues and commit the code in alongside these issues to provide context and history.
+
+It's coming. I've been running Home Assistant for almost a year now and I've done a ton of great stuff with it. Right now my config is tucked away in another private repo but I am gradually moving it over to this repo where I am attempting to document all my work through issues and commit the code alongside these issues to provide context and history.
 
 ### What about your setup and devices?
+
 This is on the cards and will come soon. I really want to get this right and share all the information I know you all want.
 
 ### Issues
+
 Inspired my @ccostan I use GitHub issues to record information about new devices, document my projects and the ideas I have for my Smart Home. I manage these issues in a number of projects to help me prioritise and focus.
 
 ### Wiki
+
 Right now the Wiki is mainly a dump of my notes, musings and empty pages. The plan is for this to act as my handbook where I will document installation and configuration notes as well as snippets and best practices. In time it will become the handbook to my home.
