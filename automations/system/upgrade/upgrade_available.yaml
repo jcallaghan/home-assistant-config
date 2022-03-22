@@ -1,4 +1,4 @@
-alias: System - Upgrade available
+alias: 'System - Upgrade available'
 id: 'a3f210ad-0587-4ed2-a5cd-a912d38ad3ee'
 description: 'DevOps task to create new issue in GitHub when an update is available.'
 initial_state: true
@@ -51,12 +51,20 @@ action:
         Release notes available via {{ state_attr('binary_sensor.updater','release_notes') }}.
       notification_id: home_assistant_upgrade
 
+  # Create a new label in GitHub.
+  - service: rest_command.github_new_label
+    data_template:
+      name: "{{ states('sensor.version_latest') }}"
+      description: ""
+      color: "BCBCBC"
+
   # Call my GiHub rest command to create a new issue in GitHub.
   - service: rest_command.github_new_issue_upgrade
     data_template:
       current_version: "{{ states('sensor.version_current') }}"
       upgrade_version: "{{ states('sensor.version_latest') }}"
       release_notes: "{{ state_attr('binary_sensor.updater','release_notes') }}"
+      labels: ['task: upgrade','task: maintenance','{{ states("sensor.version_latest") }}']
 
 # Related
 # https://github.com/jcallaghan/home-assistant-config/issues/105

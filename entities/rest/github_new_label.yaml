@@ -1,0 +1,6 @@
+github_new_label:
+  url: "https://api.github.com/repos/jcallaghan/home-assistant-config/labels"
+  method: POST
+  headers:
+    Authorization: !secret github_token
+  payload: '{"name":"{{ name }}","description":"{{ description }}","color":"{{ color }}"}'
